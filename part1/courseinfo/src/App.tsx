@@ -2,15 +2,19 @@ const Header = (props: { course: string }) => {
   return <h1>{props.course}</h1>;
 };
 
+const Part = (props: { name: string; exerciseCount: number }) => {
+  return (
+    <p>
+      {props.name} {props.exerciseCount}
+    </p>
+  );
+};
+
 const Content = (props: {
   data: { partName: string; exerciseCount: number }[];
 }): any => {
   return props.data.map((e) => {
-    return (
-      <p>
-        {e.partName} {e.exerciseCount}
-      </p>
-    );
+    return <Part name={e.partName} exerciseCount={e.exerciseCount} />;
   });
 };
 
