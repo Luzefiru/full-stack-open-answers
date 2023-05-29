@@ -28,24 +28,32 @@ const Total = (props: { exerciseCounts: number[] }) => {
 
 const App = () => {
   const course = 'Half Stack application development';
-  const part1 = 'Fundamentals of React';
-  const exercises1 = 10;
-  const part2 = 'Using props to pass data';
-  const exercises2 = 7;
-  const part3 = 'State of a component';
-  const exercises3 = 14;
+  const part1 = {
+    name: 'Fundamentals of React',
+    exercises: 10,
+  };
+  const part2 = {
+    name: 'Using props to pass data',
+    exercises: 7,
+  };
+  const part3 = {
+    name: 'State of a component',
+    exercises: 14,
+  };
 
   return (
     <div>
       <Header course={course} />
       <Content
         data={[
-          { partName: part1, exerciseCount: exercises1 },
-          { partName: part2, exerciseCount: exercises2 },
-          { partName: part3, exerciseCount: exercises3 },
+          { partName: part1.name, exerciseCount: part1.exercises },
+          { partName: part2.name, exerciseCount: part2.exercises },
+          { partName: part3.name, exerciseCount: part3.exercises },
         ]}
       />
-      <Total exerciseCounts={[exercises1, exercises2, exercises3]} />
+      <Total
+        exerciseCounts={[part1.exercises, part2.exercises, part3.exercises]}
+      />
     </div>
   );
 };
