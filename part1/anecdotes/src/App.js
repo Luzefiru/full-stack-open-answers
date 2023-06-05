@@ -20,7 +20,6 @@ const App = () => {
   };
 
   const handleVoteIncrement = (selected) => {
-    console.log(selected);
     setPoints({
       ...points,
       [selected]: (points[selected] ? points[selected] : 0) + 1,
@@ -28,14 +27,32 @@ const App = () => {
     console.log(points);
   };
 
+  const getAnecdoteWithMaxVotes = () => {
+    const highestVotes = Math.max(...Object.values(points));
+    let returnedAnecdote = anecdotes[0];
+
+    // for each key in the points object:
+    for (let anecdotesIndex in points) {
+      // if the points with the key matches the highestVotes, return the Anecdote associated with it.
+      if (points[anecdotesIndex] === highestVotes) {
+        returnedAnecdote = anecdotes[anecdotesIndex];
+      }
+    }
+
+    return returnedAnecdote;
+  };
+
   return (
     <div>
+      <h1>Anecdote of the Day</h1>
       <div>{anecdotes[selected]}</div>
       <div>has {points[selected] ? points[selected] : 0} votes</div>
       <div>
         <button onClick={() => handleVoteIncrement(selected)}>vote</button>
         <button onClick={() => chooseNextAnecdote()}>next anecdote</button>
       </div>
+      <h1>Anecdote With Most Votes</h1>
+      {getAnecdoteWithMaxVotes()}
     </div>
   );
 };
