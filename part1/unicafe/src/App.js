@@ -1,5 +1,13 @@
 import { useState } from 'react';
 
+const StatisticLine = ({ statistic, value }) => {
+  return (
+    <div>
+      {statistic} {value}
+    </div>
+  );
+};
+
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad;
   const average = (good - bad) / (good + neutral + bad);
@@ -12,16 +20,20 @@ const Statistics = ({ good, neutral, bad }) => {
         'No feedback given'
       ) : (
         <>
-          <div>good {good}</div>
-          <div>neutral {neutral}</div>
-          <div>bad {bad}</div>
-          <div>all {all}</div>
-          <div>average {average}</div>
-          <div>positive {positive}%</div>
+          <StatisticLine statistic={'good'} value={good} />
+          <StatisticLine statistic={'neutral'} value={neutral} />
+          <StatisticLine statistic={'bad'} value={bad} />
+          <StatisticLine statistic={'all'} value={all} />
+          <StatisticLine statistic={'average'} value={average} />
+          <StatisticLine statistic={'positive'} value={positive} />
         </>
       )}
     </div>
   );
+};
+
+const Button = ({ handleClick, children }) => {
+  return <button onClick={handleClick}>{children}</button>;
 };
 
 const App = () => {
@@ -38,9 +50,11 @@ const App = () => {
     <div className="App">
       <h1>Give Feedback</h1>
       <div>
-        <button onClick={handleIncrement(good, setGood)}>good</button>
-        <button onClick={handleIncrement(neutral, setNeutral)}>neutral</button>
-        <button onClick={handleIncrement(bad, setBad)}>bad</button>
+        <Button handleClick={handleIncrement(good, setGood)}>good</Button>
+        <Button handleClick={handleIncrement(neutral, setNeutral)}>
+          neutral
+        </Button>
+        <Button handleClick={handleIncrement(bad, setBad)}>bad</Button>
       </div>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
