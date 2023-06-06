@@ -12,4 +12,4 @@ Let's continue our introduction to React. First, we will take a look at how to r
 
 ## References
 
-- [Course Page](https://fullstackopen.com/en/part1)
+- [Course Page](https://fullstackopen.com/en/part2)
