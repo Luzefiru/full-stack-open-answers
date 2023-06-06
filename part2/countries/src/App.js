@@ -30,16 +30,29 @@ function App() {
     setSearch(e.target.value);
   };
 
+  const handleViewCountry = (name) => {
+    setSearch(name);
+  };
+
   const displayCountries = () => {
     if (getFilteredCountries().length > 10) {
       return 'Too many matches, specify another filter';
     } else if (getFilteredCountries().length > 1) {
       return getFilteredCountries().map((c) => (
-        <div key={c.name.common}>{c.name.common}</div>
+        <div key={c.name.common}>
+          {c.name.common}{' '}
+          <button onClick={() => handleViewCountry(c.name.common)}>show</button>
+        </div>
       ));
     } else if (getFilteredCountries().length === 1) {
       const country = getFilteredCountries()[0];
-      return <Country key={country.name.common} country={country} />;
+      return (
+        <Country
+          key={country.name.common}
+          country={country}
+          handleViewCountry={handleViewCountry}
+        />
+      );
     } else {
       return "Can't find a country with that filter. Try again.";
     }
