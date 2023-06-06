@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import Person from './Person';
+import Filter from './Filter';
+import PersonForm from './PersonForm';
+import Persons from './Persons';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -26,53 +28,25 @@ const App = () => {
     setNewNumber('');
   };
 
-  const handleChange = (e, setValue) => {
-    setValue(e.target.value);
-  };
-
-  const peopleToShow = persons.filter(
+  const personsToShow = persons.filter(
     (person) => person.name.toLowerCase().indexOf(search.toLowerCase()) === 0
   );
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
-        filter shown with{' '}
-        <input
-          onChange={(e) => {
-            handleChange(e, setSearch);
-          }}
-          value={search}
-        />
-      </form>
+      <Filter search={search} setSearch={setSearch} />
 
       <h2>add a new</h2>
-      <form onSubmit={handleAddNewPerson}>
-        <div>
-          name:{' '}
-          <input
-            onChange={(e) => handleChange(e, setNewName)}
-            value={newName}
-            required
-          />
-        </div>
-        <div>
-          number:{' '}
-          <input
-            onChange={(e) => handleChange(e, setNewNumber)}
-            value={newNumber}
-            required
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        handleSubmit={handleAddNewPerson}
+        newName={newName}
+        setNewName={setNewName}
+        newNumber={newNumber}
+        setNewNumber={setNewNumber}
+      />
       <h2>Numbers</h2>
-      {peopleToShow.map((person) => (
-        <Person key={person.name} person={person} />
-      ))}
+      <Persons personsToShow={personsToShow} />
     </div>
   );
 };
