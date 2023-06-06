@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
   const [notification, setNotification] = useState(null);
+  const [notificationColor, setNotificationColor] = useState('green');
 
   useEffect(() => {
     personsService
@@ -43,6 +44,19 @@ const App = () => {
             }, 5000);
             setNewName('');
             setNewNumber('');
+          })
+          .catch((err) => {
+            const personAttemptedToUpdate = persons.find(
+              (p) => p.name === newName
+            );
+            setNotificationColor('red');
+            setNotification(
+              `Information about ${personAttemptedToUpdate.name} has already been removed from the server`
+            );
+            setTimeout(() => {
+              setNotification(null);
+              setNotificationColor('green');
+            }, 5000);
           });
       }
       return;
@@ -63,9 +77,22 @@ const App = () => {
   };
 
   const handleDeletePerson = (personId) => {
-    personsService.deletePerson(personId).then(() => {
-      setPersons(persons.filter((p) => p.id !== personId));
-    });
+    personsService
+      .deletePerson(personId)
+      .then(() => {
+        setPersons(persons.filter((p) => p.id !== personId));
+      })
+      .catch((err) => {
+        const personAttemptedToDelete = persons.find((p) => p.id === personId);
+        setNotificationColor('red');
+        setNotification(
+          `Information about ${personAttemptedToDelete.name} has already been removed from the server`
+        );
+        setTimeout(() => {
+          setNotification(null);
+          setNotificationColor('green');
+        }, 5000);
+      });
   };
 
   const personsToShow = persons.filter(
@@ -75,7 +102,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification message={notification} color={notificationColor} />
       <Filter search={search} setSearch={setSearch} />
 
       <h2>add a new</h2>
