@@ -7,8 +7,14 @@ const App = () => {
 
   const handleAddNewPerson = (e) => {
     e.preventDefault();
+
+    // catcher for duplicate numbers
+    if (persons.filter((person) => person.name === newName).length !== 0) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
+
     setPersons([...persons, { name: newName }]);
-    console.log(persons);
     setNewName('');
   };
 
@@ -31,7 +37,6 @@ const App = () => {
       {persons.map((person) => (
         <Person key={person.name} person={person} />
       ))}
-      <br /> <div>debug newName: {newName}</div>
     </div>
   );
 };
