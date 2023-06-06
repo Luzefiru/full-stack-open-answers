@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
-import axios from 'axios';
+import personsService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,9 +11,9 @@ const App = () => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => setPersons(response.data));
+    personsService
+      .getAll()
+      .then((initialPersons) => setPersons(initialPersons));
   }, []);
 
   const handleAddNewPerson = (e) => {
@@ -25,9 +25,14 @@ const App = () => {
       return;
     }
 
-    setPersons([...persons, { name: newName, number: newNumber }]);
-    setNewName('');
-    setNewNumber('');
+    // posts to the db.json server
+    personsService
+      .createPerson({ name: newName, number: newNumber })
+      .then((newPerson) => {
+        setPersons([...persons, newPerson]);
+        setNewName('');
+        setNewNumber('');
+      });
   };
 
   const personsToShow = persons.filter(
