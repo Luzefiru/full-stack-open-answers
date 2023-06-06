@@ -35,6 +35,13 @@ const App = () => {
       });
   };
 
+  const handleDeletePerson = (personId) => {
+    console.log(personId);
+    personsService.deletePerson(personId).then(() => {
+      setPersons(persons.filter((p) => p.id !== personId));
+    });
+  };
+
   const personsToShow = persons.filter(
     (person) => person.name.toLowerCase().indexOf(search.toLowerCase()) === 0
   );
@@ -53,7 +60,10 @@ const App = () => {
         setNewNumber={setNewNumber}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons
+        personsToShow={personsToShow}
+        handleDeletePerson={handleDeletePerson}
+      />
     </div>
   );
 };
