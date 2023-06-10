@@ -5,6 +5,8 @@ app.use(express.json());
 app.use(express.static('build'));
 app.use(cors());
 
+const Note = require('./models/note');
+
 let notes = [
   {
     id: 1,
@@ -28,33 +30,18 @@ app.get('/', (request, response) => {
 });
 
 app.get('/api/notes', (req, res) => {
-  res.json(notes);
+  Note.find({}).then((result) => {
+    res.json(result);
+  });
 });
 
 app.get('/api/notes/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const note = notes.find((note) => note.id === id);
-
-  if (note) {
+  Note.findById(req.params.id).then((note) => {
     res.json(note);
-  } else {
-    res.statusMessage = 'Note does not exist';
-    res.status(404).end();
-  }
+  });
 });
 
-app.delete('/api/notes/:id', (req, res) => {
-  const idToDelete = Number(req.params.id);
-  notes = notes.filter((note) => note.id !== idToDelete);
-  res.status(204).end();
-});
-
-const generateId = () => {
-  const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
-  return maxId + 1;
-};
-
-app.post('/api/notes', (req, res) => {
+app.post('/api/notes', async (req, res) => {
   // catcher for invalid request data, must have req.body.content
   if (!req.body.content) {
     return res.status(400).json({
@@ -62,15 +49,14 @@ app.post('/api/notes', (req, res) => {
     });
   }
 
-  const note = {
+  const note = new Note({
     content: req.body.content,
     important: req.body.important || false,
-    id: generateId(),
-  };
+  });
 
-  notes = notes.concat(note);
-
-  res.json(note);
+  note.save().then((savedNote) => {
+    res.json(savedNote);
+  });
 });
 
 const unknownEndpoint = (request, response) => {

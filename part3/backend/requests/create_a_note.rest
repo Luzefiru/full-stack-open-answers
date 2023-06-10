@@ -3,5 +3,6 @@ Content-Type: application/json
 
 {
     "id": 666,
+    "content": "content doko?",
     "important": false
 }
