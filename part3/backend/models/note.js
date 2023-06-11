@@ -6,7 +6,7 @@ mongoose.set('strictQuery', false);
 mongoose.connect(url).then(console.log('MongoDB connected'));
 
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: { type: String, required: true, minLength: 5 },
   important: Boolean,
 });
 

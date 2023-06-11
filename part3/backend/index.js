@@ -49,22 +49,18 @@ app.get('/api/notes/:id', (req, res, next) => {
     });
 });
 
-app.post('/api/notes', async (req, res) => {
-  // catcher for invalid request data, must have req.body.content
-  if (!req.body.content) {
-    return res.status(400).json({
-      error: 'content missing',
-    });
-  }
-
+app.post('/api/notes', async (req, res, next) => {
   const note = new Note({
     content: req.body.content,
     important: req.body.important || false,
   });
 
-  note.save().then((savedNote) => {
-    res.json(savedNote);
-  });
+  note
+    .save()
+    .then((savedNote) => {
+      res.json(savedNote);
+    })
+    .catch((err) => next(err));
 });
 
 app.delete('/api/notes/:id', (req, res, next) => {
@@ -80,13 +76,12 @@ app.delete('/api/notes/:id', (req, res, next) => {
 
 app.put('/api/notes/:id', (req, res, next) => {
   const idToUpdate = req.params.id;
-  Note.findByIdAndUpdate(idToUpdate, req.body, { new: true })
+  Note.findByIdAndUpdate(idToUpdate, req.body, {
+    new: true,
+    runValidators: true,
+  })
     .then((newDoc) => {
-      if (newDoc !== null) {
-        res.status(200).json(newDoc);
-      } else {
-        res.status(404).json({ error: 'note not found' });
-      }
+      res.status(200).json(newDoc);
     })
     .catch((err) => next(err));
 });
@@ -98,13 +93,15 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
+  console.error('error.message', error.message);
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' });
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message });
   }
 
-  next(error);
+  return next(error);
 };
 
 // this has to be the last loaded middleware.
