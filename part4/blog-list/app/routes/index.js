@@ -1,3 +1,3 @@
-const blogRouter = require('./blog');
+const blogRouter = require('./blog.routes');
 
 module.exports = { blogRouter };

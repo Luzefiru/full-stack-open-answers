@@ -7,3 +7,14 @@ Content-Type: application/json
     "url": "https://google.com",
     "likes": 123
 }
+
+### Example 2
+POST http://127.0.0.1:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Another blog",
+    "author": "Jan de Jesus",
+    "url": "https://spotify.com",
+    "likes": 321
+}
