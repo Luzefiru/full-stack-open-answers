@@ -1,0 +1,9 @@
+POST http://127.0.0.1:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "A cool blog",
+    "author": "Ian de Jesus",
+    "url": "https://google.com",
+    "likes": 123
+}
