@@ -36,7 +36,7 @@ const listWithManyBlogs = [
   },
   {
     title: 'Another blog',
-    author: 'Jan de Jesus',
+    author: 'Ian de Jesus',
     url: 'https://spotify.com',
     likes: 321,
     id: '6487eb5f973dae5d15269bf3',
@@ -68,5 +68,25 @@ describe('favorite blog', () => {
   test('of many blogs is the one with the most likes', () => {
     const result = listHelper.favoriteBlog(listWithManyBlogs);
     expect(result).toEqual(listWithManyBlogs[2]);
+  });
+});
+
+describe('most blogs', () => {
+  test('of an empty list is null', () => {
+    expect(listHelper.mostBlogs([])).toEqual({ author: null, blogs: null });
+  });
+
+  test('of a list with 1 blog should contain that blog author', () => {
+    expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1,
+    });
+  });
+
+  test('of a list with many blogs should the author with the most blogs', () => {
+    expect(listHelper.mostBlogs(listWithManyBlogs)).toEqual({
+      author: 'Ian de Jesus',
+      blogs: 2,
+    });
   });
 });

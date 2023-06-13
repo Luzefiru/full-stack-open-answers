@@ -15,8 +15,36 @@ favoriteBlog = (blogs) => {
   return blogs.reduce(reducerFn);
 };
 
+mostBlogs = (blogs) => {
+  if (blogs.length === 0) {
+    return { author: null, blogs: null };
+  }
+
+  const authorHistogram = {};
+  blogs.forEach((b) => {
+    if (authorHistogram[b.author] === undefined) {
+      authorHistogram[b.author] = 1;
+    } else {
+      authorHistogram[b.author]++;
+    }
+  });
+
+  const maxBlogs = Math.max(...Object.values(authorHistogram));
+
+  let returnValue = undefined;
+
+  Object.keys(authorHistogram).forEach((a) => {
+    if (authorHistogram[a] === maxBlogs) {
+      returnValue = { author: a, blogs: maxBlogs };
+    }
+  });
+
+  return returnValue;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 };
