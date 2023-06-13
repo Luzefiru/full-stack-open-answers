@@ -42,9 +42,37 @@ mostBlogs = (blogs) => {
   return returnValue;
 };
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return { author: null, likes: null };
+  }
+
+  const authorHistogram = {};
+  blogs.forEach((b) => {
+    if (authorHistogram[b.author] === undefined) {
+      authorHistogram[b.author] = b.likes;
+    } else {
+      authorHistogram[b.author] += b.likes;
+    }
+  });
+
+  const maxLikes = Math.max(...Object.values(authorHistogram));
+
+  let returnValue = undefined;
+
+  Object.keys(authorHistogram).forEach((a) => {
+    if (authorHistogram[a] === maxLikes) {
+      returnValue = { author: a, likes: maxLikes };
+    }
+  });
+
+  return returnValue;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
