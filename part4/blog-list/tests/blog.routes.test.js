@@ -74,6 +74,28 @@ describe('blog API routes', () => {
 
     expect(createdBlog.likes).toBe(0);
   });
+
+  test('server responds with 400 status if a POST title property is missing', async () => {
+    const newBlog = {
+      author: 'Jan de Jesus',
+      url: 'https://google.com',
+      likes: 3,
+    };
+
+    const response = await api.post('/api/blogs').send(newBlog);
+    expect(response.status).toBe(400);
+  });
+
+  test('server responds with 400 status if a POST url property is missing', async () => {
+    const newBlog = {
+      title: 'A new blog',
+      author: 'Jan de Jesus',
+      likes: 3,
+    };
+
+    const response = await api.post('/api/blogs').send(newBlog);
+    expect(response.status).toBe(400);
+  });
 });
 
 afterAll(async () => {
