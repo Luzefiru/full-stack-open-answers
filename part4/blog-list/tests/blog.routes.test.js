@@ -61,6 +61,19 @@ describe('blog API routes', () => {
 
     expect(newBlogList.length).toBe(initialBlogs.length + 1);
   });
+
+  test('post request with missing likes property should default to 0', async () => {
+    const newBlog = {
+      title: 'A new blog',
+      author: 'Jan de Jesus',
+      url: 'https://google.com',
+    };
+
+    const response = await api.post('/api/blogs').send(newBlog);
+    const createdBlog = response.body;
+
+    expect(createdBlog.likes).toBe(0);
+  });
 });
 
 afterAll(async () => {
