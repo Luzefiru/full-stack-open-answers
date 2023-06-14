@@ -124,21 +124,26 @@ describe('blog API DELETE endpoints', () => {
 });
 
 describe('blog API PATCH endpoints', () => {
-  test.only('should successfully increment post likes by 1', async () => {
+  test('should successfully update likes', async () => {
     const getResponse = await api.get('/api/blogs');
     const blogList = getResponse.body;
-    const oldLikes = blogList[0].likes;
     const idToUpdate = blogList[0].id;
 
-    console.log(idToUpdate);
-
-    api.patch(`/api/blogs${idToUpdate}`).send({ likes: 32 });
+    await api.patch(`/api/blogs/${idToUpdate}`).send({ likes: 32 });
 
     const newGetResponse = await api.get('/api/blogs');
     const targetPost = newGetResponse.body.find((e) => e.id === idToUpdate);
     const newLikes = targetPost.likes;
 
-    expect(newLikes).not.toBe(oldLikes);
+    expect(newLikes).toBe(32);
+  });
+
+  test('should return a 404 status code for documents that do not exist', async () => {
+    const invalidId = '64893a80a5af920d9793edd2';
+
+    const patchResponse = await api.patch(`/api/blogs/${invalidId}`);
+
+    expect(patchResponse.status).toBe(404);
   });
 });
 
