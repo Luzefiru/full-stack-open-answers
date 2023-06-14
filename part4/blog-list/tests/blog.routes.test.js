@@ -46,6 +46,21 @@ describe('blog API routes', () => {
 
     expect(response.body[0].id).toBeDefined();
   });
+
+  test('post requests should create new documents', async () => {
+    const newBlog = {
+      title: 'A new blog',
+      author: 'Jan de Jesus',
+      url: 'https://google.com',
+      likes: 3,
+    };
+
+    await api.post('/api/blogs').send(newBlog);
+    const newBlogListResponse = await api.get('/api/blogs');
+    const newBlogList = newBlogListResponse.body;
+
+    expect(newBlogList.length).toBe(initialBlogs.length + 1);
+  });
 });
 
 afterAll(async () => {
