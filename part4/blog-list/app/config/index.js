@@ -4,7 +4,10 @@ const { logger } = require('../utils');
 
 // see .env.example for setup
 const PORT = process.env.PORT || 3001;
-const MONGODB_STRING = process.env.MONGODB_STRING;
+const MONGODB_STRING =
+  process.env.NODE_ENV === 'test'
+    ? process.env.MONGODB_TEST
+    : process.env.MONGODB_STRING;
 
 mongoose.set('strictQuery', false);
 async function connectToMongoDB() {

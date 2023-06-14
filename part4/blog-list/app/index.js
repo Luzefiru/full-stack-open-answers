@@ -1,4 +1,5 @@
 const { logger } = require('./utils');
+const config = require('./config');
 const express = require('express');
 const cors = require('cors');
 const { errorHandler, unknownRouteHandler } = require('./middleware');
