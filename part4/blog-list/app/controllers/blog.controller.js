@@ -27,4 +27,16 @@ const deleteBlog = async (blogId) => {
   }
 };
 
-module.exports = { getAllBlogs, postBlog, deleteBlog };
+const updateBlog = async (blogId, updateObj) => {
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(blogId, updateObj, {
+      new: true,
+    }).exec();
+
+    return updatedBlog;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = { getAllBlogs, postBlog, deleteBlog, updateBlog };

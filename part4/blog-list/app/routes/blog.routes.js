@@ -36,4 +36,21 @@ blogRouter.delete('/:id', async (req, res, next) => {
   }
 });
 
+blogRouter.patch('/:id', async (req, res, next) => {
+  const blogId = req.params.id;
+  const updateObj = req.body;
+
+  try {
+    const updatedBlog = await blogController.updateBlog(blogId, updateObj);
+
+    if (updatedBlog === null) {
+      res.status(404).json({ error: 'no blog with that id found' });
+    } else {
+      res.status(200).json(updatedBlog);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = blogRouter;
