@@ -123,6 +123,25 @@ describe('blog API DELETE endpoints', () => {
   });
 });
 
+describe('blog API PATCH endpoints', () => {
+  test.only('should successfully increment post likes by 1', async () => {
+    const getResponse = await api.get('/api/blogs');
+    const blogList = getResponse.body;
+    const oldLikes = blogList[0].likes;
+    const idToUpdate = blogList[0].id;
+
+    console.log(idToUpdate);
+
+    api.patch(`/api/blogs${idToUpdate}`).send({ likes: 32 });
+
+    const newGetResponse = await api.get('/api/blogs');
+    const targetPost = newGetResponse.body.find((e) => e.id === idToUpdate);
+    const newLikes = targetPost.likes;
+
+    expect(newLikes).not.toBe(oldLikes);
+  });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
