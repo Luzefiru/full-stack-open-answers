@@ -18,4 +18,13 @@ const postBlog = async (blog) => {
   }
 };
 
-module.exports = { getAllBlogs, postBlog };
+const deleteBlog = async (blogId) => {
+  try {
+    const response = await Blog.findByIdAndDelete(blogId).exec();
+    return response;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = { getAllBlogs, postBlog, deleteBlog };
