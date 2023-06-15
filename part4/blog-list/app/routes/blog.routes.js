@@ -1,6 +1,7 @@
 const blogRouter = require('express').Router();
 const blogController = require('../controllers/blog.controller.js');
 const userController = require('../controllers/user.controller.js');
+const jwtAuth = require('../middleware/jwtAuth.middleware.js');
 
 blogRouter.get('/', async (req, res, next) => {
   try {
@@ -11,14 +12,11 @@ blogRouter.get('/', async (req, res, next) => {
   }
 });
 
-blogRouter.post('/', async (req, res, next) => {
+blogRouter.post('/', jwtAuth, async (req, res, next) => {
   const blogData = req.body;
+  const { id: userId } = req.token;
 
   try {
-    // get a random ObjectId from the 'users' database to populate the `user` field
-    const listOfUsers = await userController.getAllUsers();
-    const userId = listOfUsers[0]._id;
-
     // save the blog
     const newBlog = await blogController.postBlog(blogData, userId);
 
