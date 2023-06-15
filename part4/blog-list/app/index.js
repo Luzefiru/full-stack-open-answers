@@ -3,7 +3,7 @@ const config = require('./config');
 const express = require('express');
 const cors = require('cors');
 const { errorHandler, unknownRouteHandler } = require('./middleware');
-const { blogRouter, userRouter } = require('./routes');
+const { blogRouter, userRouter, loginRouter } = require('./routes');
 
 const app = express();
 
@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
+app.use('/api/login', loginRouter);
 
 app.use(unknownRouteHandler);
 app.use(errorHandler);
