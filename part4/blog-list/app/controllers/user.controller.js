@@ -33,4 +33,15 @@ const getAllUsers = async () => {
   }
 };
 
-module.exports = { createUser, getAllUsers };
+const addBlogToUser = async (userId, blogId) => {
+  try {
+    await User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { blogs: blogId } }
+    ).exec();
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = { createUser, getAllUsers, addBlogToUser };

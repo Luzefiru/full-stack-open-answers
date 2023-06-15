@@ -1,5 +1,6 @@
 const blogRouter = require('express').Router();
 const blogController = require('../controllers/blog.controller.js');
+const userController = require('../controllers/user.controller.js');
 
 blogRouter.get('/', async (req, res, next) => {
   try {
@@ -14,7 +15,17 @@ blogRouter.post('/', async (req, res, next) => {
   const blogData = req.body;
 
   try {
-    const newBlog = await blogController.postBlog(blogData);
+    // get a random ObjectId from the 'users' database to populate the `user` field
+    const listOfUsers = await userController.getAllUsers();
+    const userId = listOfUsers[0]._id;
+
+    // save the blog
+    const newBlog = await blogController.postBlog(blogData, userId);
+
+    console.log('newBlog', newBlog);
+
+    // add the blog to the user
+    await userController.addBlogToUser(userId, newBlog._id);
     res.status(201).json(newBlog);
   } catch (err) {
     next(err);

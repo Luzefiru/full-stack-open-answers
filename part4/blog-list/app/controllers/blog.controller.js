@@ -9,9 +9,9 @@ const getAllBlogs = async () => {
   }
 };
 
-const postBlog = async (blog) => {
+const postBlog = async (blog, authorId) => {
   try {
-    const newBlog = await Blog.create(blog);
+    const newBlog = await Blog.create({ ...blog, user: authorId });
     return newBlog;
   } catch (err) {
     throw err;
