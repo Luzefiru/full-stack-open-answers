@@ -22,8 +22,6 @@ blogRouter.post('/', async (req, res, next) => {
     // save the blog
     const newBlog = await blogController.postBlog(blogData, userId);
 
-    console.log('newBlog', newBlog);
-
     // add the blog to the user
     await userController.addBlogToUser(userId, newBlog._id);
     res.status(201).json(newBlog);
