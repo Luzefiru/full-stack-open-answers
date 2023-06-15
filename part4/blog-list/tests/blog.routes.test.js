@@ -2,8 +2,9 @@ const supertest = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app');
 const Blog = require('../app/models/blog.model');
-mongoose.set('bufferTimeoutMS', 10000);
-jest.setTimeout(10000);
+const User = require('../app/models/user.model');
+mongoose.set('bufferTimeoutMS', 30000);
+jest.setTimeout(30000);
 
 const api = supertest(app);
 
@@ -28,9 +29,22 @@ const initialBlogs = [
   },
 ];
 
+const initialUser = {
+  name: 'Test de Jesus',
+  username: 'test.user',
+  password: 'testpassword',
+};
+
+let rootUser;
+
 beforeEach(async () => {
+  await User.deleteMany({});
+  const testUser = await User.create(initialUser);
+  rootUser = testUser;
   await Blog.deleteMany({});
-  const promises = initialBlogs.map((blog) => new Blog(blog).save());
+  const promises = initialBlogs.map((blog) =>
+    new Blog({ ...blog, user: testUser._id }).save()
+  );
   await Promise.all(promises);
 });
 
@@ -45,6 +59,7 @@ describe('blog API GET endpoints', () => {
     const response = await api.get('/api/blogs');
 
     expect(response.body[0].id).toBeDefined();
+    expect(response.body[0]._id).not.toBeDefined();
   });
 });
 
