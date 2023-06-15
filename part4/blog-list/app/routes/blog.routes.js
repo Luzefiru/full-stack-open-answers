@@ -35,6 +35,10 @@ blogRouter.delete('/:id', jwtAuth, async (req, res, next) => {
   try {
     const targetBlog = await blogController.getBlog(blogId);
 
+    if (targetBlog === null) {
+      return res.status(404).json({ error: 'no blog with that id found' });
+    }
+
     if (targetBlog.user.id.toString() !== tokenUserId) {
       return res
         .status(401)

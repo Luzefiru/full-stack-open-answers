@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const app = require('../app');
 const Blog = require('../app/models/blog.model');
 const User = require('../app/models/user.model');
+const userController = require('../app/controllers/user.controller');
 mongoose.set('bufferTimeoutMS', 30000);
 jest.setTimeout(30000);
 
@@ -35,12 +36,14 @@ const initialUser = {
   password: 'testpassword',
 };
 
-let rootUser;
-
 beforeEach(async () => {
   await User.deleteMany({});
-  const testUser = await User.create(initialUser);
-  rootUser = testUser;
+  const { name, username, password } = initialUser;
+  const testUser = await userController.createUser({
+    name,
+    username,
+    password,
+  });
   await Blog.deleteMany({});
   const promises = initialBlogs.map((blog) =>
     new Blog({ ...blog, user: testUser._id }).save()
@@ -64,6 +67,40 @@ describe('blog API GET endpoints', () => {
 });
 
 describe('blog API POST endpoints', () => {
+  let token;
+  beforeEach(async () => {
+    const loginResponse = await api
+      .post('/api/login')
+      .send({ username: initialUser.username, password: initialUser.password });
+    token = loginResponse.body.token;
+  });
+
+  test('returns a 401 status code if no Bearer token is provided', async () => {
+    const newBlog = {
+      title: 'A new blog',
+      author: 'Jan de Jesus',
+      url: 'https://google.com',
+      likes: 3,
+    };
+
+    await api.post('/api/blogs').send(newBlog).expect(401);
+  });
+
+  test('returns a 401 status code if Bearer token is malformatted', async () => {
+    const newBlog = {
+      title: 'A new blog',
+      author: 'Jan de Jesus',
+      url: 'https://google.com',
+      likes: 3,
+    };
+
+    await api
+      .post('/api/blogs')
+      .set({ Authorization: token })
+      .send(newBlog)
+      .expect(401);
+  });
+
   test('should create new documents', async () => {
     const newBlog = {
       title: 'A new blog',
@@ -72,7 +109,10 @@ describe('blog API POST endpoints', () => {
       likes: 3,
     };
 
-    await api.post('/api/blogs').send(newBlog);
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog);
     const newBlogListResponse = await api.get('/api/blogs');
     const newBlogList = newBlogListResponse.body;
 
@@ -86,7 +126,10 @@ describe('blog API POST endpoints', () => {
       url: 'https://google.com',
     };
 
-    const response = await api.post('/api/blogs').send(newBlog);
+    const response = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog);
     const createdBlog = response.body;
 
     expect(createdBlog.likes).toBe(0);
@@ -99,7 +142,10 @@ describe('blog API POST endpoints', () => {
       likes: 3,
     };
 
-    const response = await api.post('/api/blogs').send(newBlog);
+    const response = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog);
     expect(response.status).toBe(400);
   });
 
@@ -110,18 +156,31 @@ describe('blog API POST endpoints', () => {
       likes: 3,
     };
 
-    const response = await api.post('/api/blogs').send(newBlog);
+    const response = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog);
     expect(response.status).toBe(400);
   });
 });
 
 describe('blog API DELETE endpoints', () => {
+  let token;
+  beforeEach(async () => {
+    const loginResponse = await api
+      .post('/api/login')
+      .send({ username: initialUser.username, password: initialUser.password });
+    token = loginResponse.body.token;
+  });
+
   test('should remove documents from the database', async () => {
     const getResponse = await api.get('/api/blogs');
     const oldListOfBlogs = getResponse.body;
     const idToDelete = oldListOfBlogs[0].id;
 
-    const deleteResponse = await api.delete(`/api/blogs/${idToDelete}`);
+    await api
+      .delete(`/api/blogs/${idToDelete}`)
+      .set('Authorization', `Bearer ${token}`);
 
     const newGetResponse = await api.get('/api/blogs');
     const newListOfBlogs = newGetResponse.body;
@@ -132,7 +191,9 @@ describe('blog API DELETE endpoints', () => {
   test('should return a 404 status code if the id does not exist in the database', async () => {
     const invalidId = '64893a80a5af920d9793edd2';
 
-    const deleteResponse = await api.delete(`/api/blogs/${invalidId}`);
+    const deleteResponse = await api
+      .delete(`/api/blogs/${invalidId}`)
+      .set('Authorization', `Bearer ${token}`);
 
     expect(deleteResponse.status).toBe(404);
   });
