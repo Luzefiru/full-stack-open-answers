@@ -28,15 +28,26 @@ blogRouter.post('/', jwtAuth, async (req, res, next) => {
   }
 });
 
-blogRouter.delete('/:id', async (req, res, next) => {
+blogRouter.delete('/:id', jwtAuth, async (req, res, next) => {
   const blogId = req.params.id;
-  try {
-    const deletedBlog = await blogController.deleteBlog(blogId);
+  const { id: tokenUserId } = req.token;
 
-    if (deletedBlog !== null) {
-      res.status(204).end();
+  try {
+    const targetBlog = await blogController.getBlog(blogId);
+
+    if (targetBlog.user.id.toString() !== tokenUserId) {
+      return res
+        .status(401)
+        .json({ error: 'you are not the owner of this blog' });
     } else {
-      res.status(404).json({ error: 'no blog with that id found' });
+      const deletedBlog = await blogController.deleteBlog(blogId);
+
+      if (deletedBlog !== null) {
+        userController.removeBlogFromUser(tokenUserId, deletedBlog._id);
+        res.status(204).end();
+      } else {
+        res.status(404).json({ error: 'no blog with that id found' });
+      }
     }
   } catch (err) {
     next(err);

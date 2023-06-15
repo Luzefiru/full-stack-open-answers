@@ -46,4 +46,15 @@ const addBlogToUser = async (userId, blogId) => {
   }
 };
 
-module.exports = { createUser, getAllUsers, addBlogToUser };
+const removeBlogFromUser = async (userId, blogId) => {
+  try {
+    await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { blogs: { $eq: blogId } } }
+    ).exec();
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = { createUser, getAllUsers, addBlogToUser, removeBlogFromUser };

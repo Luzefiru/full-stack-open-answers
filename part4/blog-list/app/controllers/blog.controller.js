@@ -1,5 +1,14 @@
 const Blog = require('../models/blog.model');
 
+const getBlog = async (blogId) => {
+  try {
+    const blog = await Blog.findById(blogId).populate('user', 'id').exec();
+    return blog;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const getAllBlogs = async () => {
   try {
     const blogs = await Blog.find({}).populate('user', 'name username id');
@@ -45,4 +54,4 @@ const updateBlog = async (blogId, updateObj) => {
   }
 };
 
-module.exports = { getAllBlogs, postBlog, deleteBlog, updateBlog };
+module.exports = { getBlog, getAllBlogs, postBlog, deleteBlog, updateBlog };
