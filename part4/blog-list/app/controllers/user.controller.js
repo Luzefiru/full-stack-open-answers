@@ -26,7 +26,9 @@ const createUser = async ({ name, username, password }) => {
 
 const getAllUsers = async () => {
   try {
-    const userList = await User.find({}).exec();
+    const userList = await User.find({})
+      .populate('blogs', 'url title author _id')
+      .exec();
     return userList;
   } catch (err) {
     throw err;

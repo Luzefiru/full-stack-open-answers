@@ -12,7 +12,12 @@ const getAllBlogs = async () => {
 const postBlog = async (blog, authorId) => {
   try {
     const newBlog = await Blog.create({ ...blog, user: authorId });
-    return newBlog;
+    const newBlogPopulated = await newBlog.populate(
+      'user',
+      'name username _id'
+    );
+
+    return newBlogPopulated;
   } catch (err) {
     throw err;
   }
