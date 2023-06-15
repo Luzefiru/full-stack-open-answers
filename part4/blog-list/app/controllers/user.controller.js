@@ -1,8 +1,14 @@
+const mongoose = require('mongoose');
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
 const createUser = async ({ name, username, password }) => {
+  // password input validation
+  if (password?.length < 3) {
+    throw new mongoose.Error.ValidationError();
+  }
+
   try {
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
