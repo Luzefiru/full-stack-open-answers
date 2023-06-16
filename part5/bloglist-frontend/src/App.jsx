@@ -14,6 +14,16 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  // effect to load previously logged in user
+  useEffect(() => {
+    setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
+  }, []);
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('currentUser');
+  };
+
   // show login form only if no currentUser exists
   if (!currentUser) {
     return (
@@ -31,7 +41,8 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <div>
-        {currentUser.name} logged in <button onClick={() => {}}>Logout</button>
+        {currentUser.name} logged in{' '}
+        <button onClick={handleLogout}>Logout</button>
         <br />
         <br />
       </div>

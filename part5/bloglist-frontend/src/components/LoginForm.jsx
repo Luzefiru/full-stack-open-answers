@@ -23,11 +23,14 @@ const LoginForm = ({
       token: data.token,
     });
 
-    localStorage.setItem('currentUser', {
-      name: data.name,
-      username: data.username,
-      token: data.token,
-    });
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify({
+        name: data.name,
+        username: data.username,
+        token: data.token,
+      })
+    );
 
     resetLoginForm();
   };
