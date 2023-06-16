@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import Note from './components/Note'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
+import LoginForm from './components/LoginForm'
+import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
 import noteService from './services/notes'
 import loginService from './services/login'
 
@@ -59,6 +62,20 @@ const App = () => {
     localStorage.removeItem('loggedNoteappUser')
   }
 
+  const loginForm = () => {
+    return (
+      <Togglable buttonLabel="login">
+        <LoginForm
+          handleSubmit={handleLogin}
+          username={username}
+          password={password}
+          handleUsernameChange={(e) => handleChange(e, setUsername)}
+          handlePasswordChange={(e) => handleChange(e, setPassword)}
+        />
+      </Togglable>
+    )
+  }
+
   const addNote = (event) => {
     event.preventDefault()
     const noteObject = {
@@ -72,8 +89,8 @@ const App = () => {
     })
   }
 
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value)
+  const handleChange = (e, setFn) => {
+    setFn(e.target.value)
   }
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
@@ -98,35 +115,12 @@ const App = () => {
       })
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  )
-
   const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
+    <NoteForm
+      onSubmit={addNote}
+      value={newNote}
+      handleChange={(e) => handleChange(e, setNewNote)}
+    />
   )
 
   return (
