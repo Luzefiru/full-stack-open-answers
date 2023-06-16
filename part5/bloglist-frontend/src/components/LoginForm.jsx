@@ -6,33 +6,37 @@ const LoginForm = ({
   password,
   setPassword,
   setCurrentUser,
+  notify,
 }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('handling');
     const resetLoginForm = () => {
       setUsername('');
       setPassword('');
     };
 
-    const data = await loginService.login(username, password);
+    try {
+      const data = await loginService.login(username, password);
 
-    setCurrentUser({
-      username: data.username,
-      name: data.name,
-      token: data.token,
-    });
-
-    localStorage.setItem(
-      'currentUser',
-      JSON.stringify({
-        name: data.name,
+      setCurrentUser({
         username: data.username,
+        name: data.name,
         token: data.token,
-      })
-    );
+      });
 
-    resetLoginForm();
+      localStorage.setItem(
+        'currentUser',
+        JSON.stringify({
+          name: data.name,
+          username: data.username,
+          token: data.token,
+        })
+      );
+
+      resetLoginForm();
+    } catch (err) {
+      notify('wrong username or password', 'failure');
+    }
   };
 
   const handleChange = (setFn) => {

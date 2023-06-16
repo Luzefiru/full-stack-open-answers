@@ -10,6 +10,7 @@ const NewBlogForm = ({
   currentUser,
   blogs,
   setBlogs,
+  notify,
 }) => {
   const handleCreateNewBlog = async (e) => {
     const clearBlogForm = () => {
@@ -28,6 +29,9 @@ const NewBlogForm = ({
     });
 
     setBlogs(blogs.concat(newBlog));
+
+    notify(`a new blog ${newBlog.title} by ${newBlog.author} added`, 'success');
+
     clearBlogForm();
   };
 
