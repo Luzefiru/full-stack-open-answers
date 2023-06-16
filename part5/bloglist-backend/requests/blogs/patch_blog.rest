@@ -1,0 +1,6 @@
+PATCH http://127.0.0.1:3003/api/blogs/648ace821177086fc22c6c7e
+Content-Type: application/json 
+
+{
+    "likes": 111
+}
