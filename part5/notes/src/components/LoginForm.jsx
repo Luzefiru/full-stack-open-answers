@@ -1,12 +1,21 @@
 import { useState } from 'react'
 
-const LoginForm = ({
-  handleSubmit,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password,
-}) => {
+const LoginForm = ({ login }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleChange = (e, setFn) => {
+    setFn(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (login(username, password) === true) {
+      setUsername('')
+      setPassword('')
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -15,7 +24,7 @@ const LoginForm = ({
           type="text"
           value={username}
           name="Username"
-          onChange={handleUsernameChange}
+          onChange={(e) => handleChange(e, setUsername)}
         />
       </div>
       <div>
@@ -24,7 +33,7 @@ const LoginForm = ({
           type="password"
           value={password}
           name="Password"
-          onChange={handlePasswordChange}
+          onChange={(e) => handleChange(e, setPassword)}
         />
       </div>
       <button type="submit">login</button>

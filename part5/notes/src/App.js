@@ -10,7 +10,6 @@ import loginService from './services/login'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -33,10 +32,7 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    console.log('logging in with', username, password)
-
+  const login = async (username, password) => {
     try {
       const loggedInUser = await loginService.login({ username, password })
       setUser(loggedInUser)
@@ -46,14 +42,13 @@ const App = () => {
         JSON.stringify(loggedInUser)
       )
       noteService.setToken(loggedInUser.token)
-
-      setUsername('')
-      setPassword('')
+      return true
     } catch (err) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
+      return false
     }
   }
 
@@ -65,32 +60,15 @@ const App = () => {
   const loginForm = () => {
     return (
       <Togglable buttonLabel="login">
-        <LoginForm
-          handleSubmit={handleLogin}
-          username={username}
-          password={password}
-          handleUsernameChange={(e) => handleChange(e, setUsername)}
-          handlePasswordChange={(e) => handleChange(e, setPassword)}
-        />
+        <LoginForm login={login} />
       </Togglable>
     )
   }
 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5,
-    }
-
-    noteService.create(noteObject).then((returnedNote) => {
+  const addNote = ({ content, important }) => {
+    noteService.create({ content, important }).then((returnedNote) => {
       setNotes(notes.concat(returnedNote))
-      setNewNote('')
     })
-  }
-
-  const handleChange = (e, setFn) => {
-    setFn(e.target.value)
   }
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
@@ -115,13 +93,7 @@ const App = () => {
       })
   }
 
-  const noteForm = () => (
-    <NoteForm
-      onSubmit={addNote}
-      value={newNote}
-      handleChange={(e) => handleChange(e, setNewNote)}
-    />
-  )
+  const noteForm = () => <NoteForm createNote={addNote} />
 
   return (
     <div>
