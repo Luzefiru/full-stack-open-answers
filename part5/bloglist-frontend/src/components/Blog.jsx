@@ -19,7 +19,7 @@ const Blog = ({ blog }) => {
           <div>
             {blog.likes} <button>like</button>
           </div>
-          <div>{blog.author}</div>
+          <div>{blog.user.name}</div>
         </>
       );
     }

@@ -84,7 +84,7 @@ const App = () => {
           <br />
         </div>
 
-        <Togglable text="New Note">
+        <Togglable text="New Blog">
           <NewBlogForm createBlog={createBlog} />
         </Togglable>
 
