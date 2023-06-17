@@ -6,7 +6,7 @@ const LoginForm = ({
   password,
   setPassword,
   setCurrentUser,
-  notify,
+  notifyFailure,
 }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ const LoginForm = ({
 
       resetLoginForm();
     } catch (err) {
-      notify('wrong username or password', 'failure');
+      notifyFailure('wrong username or password');
     }
   };
 

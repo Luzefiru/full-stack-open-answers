@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
@@ -18,9 +18,8 @@ const App = () => {
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
-  // notification state
-  const [notificationMessage, setNotificationMessage] = useState('');
-  const [notificationType, setNotificationType] = useState('');
+  // Notification ref
+  const notifRef = useRef(null);
 
   // effect to get blog list
   useEffect(() => {
@@ -37,28 +36,20 @@ const App = () => {
     localStorage.removeItem('currentUser');
   };
 
-  const notify = (str, type) => {
-    setNotificationMessage(str);
-    setNotificationType(type);
-
-    setTimeout(() => {
-      setNotificationMessage('');
-      setNotificationType('');
-    }, 5000);
-  };
-
   // show login form only if no currentUser exists
   if (!currentUser) {
     return (
       <>
-        <Notification message={notificationMessage} type={notificationType} />
+        <Notification ref={notifRef} />
         <LoginForm
           username={username}
           password={password}
           setUsername={setUsername}
           setPassword={setPassword}
           setCurrentUser={setCurrentUser}
-          notify={notify}
+          notifyFailure={(str) => {
+            notifRef.current.notifyFailure(str);
+          }}
         />
       </>
     );
@@ -66,7 +57,7 @@ const App = () => {
 
   return (
     <>
-      <Notification message={notificationMessage} type={notificationType} />
+      <Notification ref={notifRef} />
       <div>
         <h2>blogs</h2>
         <div>
@@ -86,7 +77,9 @@ const App = () => {
           currentUser={currentUser}
           blogs={blogs}
           setBlogs={setBlogs}
-          notify={notify}
+          notifySuccess={(str) => {
+            notifRef.current.notifySuccess(str);
+          }}
         />
 
         {blogs.map((blog) => (

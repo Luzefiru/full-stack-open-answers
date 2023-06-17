@@ -1,3 +1,5 @@
+import { useImperativeHandle, forwardRef, useState } from 'react';
+
 const successStyles = {
   fontSize: '1.5rem',
   border: '2px solid green',
@@ -16,7 +18,42 @@ const failureStyles = {
   borderRadius: '8px',
 };
 
-const Notification = ({ message, type }) => {
+const Notification = (_, ref) => {
+  // notification state
+  const [message, setMessage] = useState('');
+  const [type, setType] = useState('');
+
+  const notifySuccess = (str) => {
+    setMessage(str);
+    setType('success');
+
+    setTimeout(() => {
+      setMessage('');
+      setType('');
+    }, 5000);
+  };
+
+  const notifyFailure = (str) => {
+    setMessage(str);
+    setType('failure');
+
+    setTimeout(() => {
+      setMessage('');
+      setType('');
+    }, 5000);
+  };
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        notifySuccess,
+        notifyFailure,
+      };
+    },
+    []
+  );
+
   if (message) {
     return (
       <div style={type === 'success' ? successStyles : failureStyles}>
@@ -26,4 +63,4 @@ const Notification = ({ message, type }) => {
   }
 };
 
-export default Notification;
+export default forwardRef(Notification);
