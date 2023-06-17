@@ -16,7 +16,6 @@ const App = () => {
 
   // Notification ref
   const notifRef = useRef(null);
-
   // effect to get blog list
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -97,7 +96,14 @@ const App = () => {
             return a.likes < b.likes ? 1 : -1;
           })
           .map((blog) => (
-            <Blog key={blog.id} blog={blog} refreshBlogs={refreshBlogs} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              refreshBlogs={refreshBlogs}
+              token={currentUser.token}
+              notifySuccess={notifRef.current.notifySuccess}
+              notifyFailure={notifRef.current.notifyFailure}
+            />
           ))}
       </div>
     </>
