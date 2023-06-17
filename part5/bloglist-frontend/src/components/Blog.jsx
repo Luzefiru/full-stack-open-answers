@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
+import propTypes from 'prop-types';
 
 const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
   const [isShowingDetails, setIsShowingDetails] = useState(false);
@@ -76,6 +77,20 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
       {details}
     </div>
   );
+};
+
+Blog.propTypes = {
+  blog: propTypes.shape({
+    title: propTypes.string.isRequired,
+    author: propTypes.string,
+    url: propTypes.string.isRequired,
+    likes: propTypes.number.isRequired,
+    user: propTypes.object.isRequired,
+  }),
+  refreshBlogs: propTypes.func.isRequired,
+  token: propTypes.string.isRequired,
+  notifySuccess: propTypes.func.isRequired,
+  notifyFailure: propTypes.func.isRequired,
 };
 
 export default Blog;

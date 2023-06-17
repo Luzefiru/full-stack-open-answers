@@ -17,33 +17,24 @@ const createBlog = async ({ title, author, url, user, token }) => {
 };
 
 const likeBlog = async (blog) => {
-  try {
-    const blogId = blog.id;
-    // serializing the user field into ObjectId data type to match Blog schema
-    blog.user = blog.user.id;
-    delete blog.id;
+  const blogId = blog.id;
+  // serializing the user field into ObjectId data type to match Blog schema
+  blog.user = blog.user.id;
+  delete blog.id;
 
-    const response = await axios.patch(`${baseUrl}/${blogId}`, {
-      ...blog,
-      likes: blog.likes + 1,
-    });
+  const response = await axios.patch(`${baseUrl}/${blogId}`, {
+    ...blog,
+    likes: blog.likes + 1,
+  });
 
-    const updatedBlog = response.data;
-    return updatedBlog;
-  } catch (err) {
-    throw err;
-  }
+  const updatedBlog = response.data;
+  return updatedBlog;
 };
 
 const deleteBlog = async ({ blog, token }) => {
-  try {
-    await axios.delete(`${baseUrl}/${blog.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (err) {
-    throw err;
-  }
+  await axios.delete(`${baseUrl}/${blog.id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default { getAll, createBlog, likeBlog, deleteBlog };
