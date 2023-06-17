@@ -4,6 +4,7 @@ import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
+import Togglable from './components/Toggleable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -67,20 +68,22 @@ const App = () => {
           <br />
         </div>
 
-        <NewBlogForm
-          title={title}
-          setTitle={setTitle}
-          author={author}
-          setAuthor={setAuthor}
-          url={url}
-          setUrl={setUrl}
-          currentUser={currentUser}
-          blogs={blogs}
-          setBlogs={setBlogs}
-          notifySuccess={(str) => {
-            notifRef.current.notifySuccess(str);
-          }}
-        />
+        <Togglable text="New Note">
+          <NewBlogForm
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            url={url}
+            setUrl={setUrl}
+            currentUser={currentUser}
+            blogs={blogs}
+            setBlogs={setBlogs}
+            notifySuccess={(str) => {
+              notifRef.current.notifySuccess(str);
+            }}
+          />
+        </Togglable>
 
         {blogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />
