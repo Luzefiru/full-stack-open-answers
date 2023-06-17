@@ -33,6 +33,7 @@ const NewBlogForm = ({ createBlog }) => {
             value={title}
             name="title"
             id="title"
+            placeholder="Title"
           />
         </div>
         <div>
@@ -42,6 +43,7 @@ const NewBlogForm = ({ createBlog }) => {
             value={author}
             name="author"
             id="author"
+            placeholder="Author"
           />
         </div>
         <div>
@@ -51,6 +53,7 @@ const NewBlogForm = ({ createBlog }) => {
             value={url}
             name="url"
             id="url"
+            placeholder="URL"
           />
         </div>
 

@@ -51,9 +51,7 @@ describe('the Blog component', () => {
       user: {},
     };
 
-    const mockHandler = jest.fn(() => {
-      console.log('mockHandler called');
-    });
+    const mockHandler = jest.fn();
 
     render(
       <Blog
