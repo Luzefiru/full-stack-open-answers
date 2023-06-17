@@ -27,6 +27,10 @@ const App = () => {
     setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
   }, []);
 
+  const refreshBlogs = async () => {
+    blogService.getAll().then((blogs) => setBlogs(blogs));
+  };
+
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem('currentUser');
@@ -89,7 +93,7 @@ const App = () => {
         </Togglable>
 
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} refreshBlogs={refreshBlogs} />
         ))}
       </div>
     </>

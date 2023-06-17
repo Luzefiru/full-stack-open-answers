@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import blogService from '../services/blogs';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, refreshBlogs }) => {
   const [isShowingDetails, setIsShowingDetails] = useState(false);
 
   const showDetails = () => {
@@ -11,13 +12,21 @@ const Blog = ({ blog }) => {
     return isShowingDetails ? 'hide' : 'view';
   })();
 
+  const likeBlog = async () => {
+    try {
+      const updatedBlog = await blogService.likeBlog(blog);
+      console.log(updatedBlog);
+      refreshBlogs();
+    } catch (err) {}
+  };
+
   const details = (() => {
     if (isShowingDetails) {
       return (
         <>
           <div>{blog.url}</div>
           <div>
-            {blog.likes} <button>like</button>
+            {blog.likes} <button onClick={likeBlog}>like</button>
           </div>
           <div>{blog.user.name}</div>
         </>
