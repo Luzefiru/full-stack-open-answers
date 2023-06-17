@@ -1,17 +1,10 @@
-import blogService from '../services/blogs';
+import { useState } from 'react';
 
-const NewBlogForm = ({
-  title,
-  setTitle,
-  author,
-  setAuthor,
-  url,
-  setUrl,
-  currentUser,
-  blogs,
-  setBlogs,
-  notifySuccess,
-}) => {
+const NewBlogForm = ({ createBlog }) => {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
+
   const handleCreateNewBlog = async (e) => {
     const clearBlogForm = () => {
       setTitle('');
@@ -20,18 +13,7 @@ const NewBlogForm = ({
     };
 
     e.preventDefault();
-    const newBlog = await blogService.createBlog({
-      title,
-      author,
-      url,
-      user: currentUser.username,
-      token: currentUser.token,
-    });
-
-    setBlogs(blogs.concat(newBlog));
-
-    notifySuccess(`a new blog ${newBlog.title} by ${newBlog.author} added`);
-
+    await createBlog({ title, author, url });
     clearBlogForm();
   };
 

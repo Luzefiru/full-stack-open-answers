@@ -14,11 +14,6 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
 
-  // new blog state
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
-
   // Notification ref
   const notifRef = useRef(null);
 
@@ -35,6 +30,27 @@ const App = () => {
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem('currentUser');
+  };
+
+  const createBlog = async ({ title, author, url }) => {
+    try {
+      const newBlog = await blogService.createBlog({
+        title,
+        author,
+        url,
+        user: currentUser.username,
+        token: currentUser.token,
+      });
+
+      setBlogs(blogs.concat(newBlog));
+      notifRef.current.notifySuccess(
+        `a new blog ${newBlog.title} by ${newBlog.author} added`
+      );
+
+      return newBlog;
+    } catch (err) {
+      notifRef.current.notifyFailure(err.message);
+    }
   };
 
   // show login form only if no currentUser exists
@@ -69,20 +85,7 @@ const App = () => {
         </div>
 
         <Togglable text="New Note">
-          <NewBlogForm
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-            currentUser={currentUser}
-            blogs={blogs}
-            setBlogs={setBlogs}
-            notifySuccess={(str) => {
-              notifRef.current.notifySuccess(str);
-            }}
-          />
+          <NewBlogForm createBlog={createBlog} />
         </Togglable>
 
         {blogs.map((blog) => (
