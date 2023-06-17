@@ -21,4 +21,24 @@ describe('the Blog component', () => {
     expect(screen.queryByText(/https:\/\/test.com/)).not.toBeInTheDocument();
     expect(screen.queryByText(/7357/)).not.toBeInTheDocument();
   });
+
+  test('shows the url and likes only after clicking the button to toggle details', () => {
+    const testBlog = {
+      title: 'A Test Title',
+      author: 'Testy',
+      url: 'https://test.com',
+      likes: 7357,
+      user: 'Not Testy',
+    };
+
+    render(<Blog blog={testBlog} />);
+
+    expect(screen.queryByText(/https:\/\/test.com/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/7357/)).not.toBeInTheDocument();
+
+    userEvent.click(screen.getByRole('button'));
+
+    expect(screen.queryByText(/https:\/\/test.com/)).toBeInTheDocument();
+    expect(screen.queryByText(/7357/)).toBeInTheDocument();
+  });
 });
