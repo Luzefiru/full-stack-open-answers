@@ -15,8 +15,8 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
 
   const likeBlog = async () => {
     try {
-      await blogService.likeBlog(blog);
       notifySuccess(`You liked the blog: ${blog.title} by ${blog.author}`);
+      await blogService.likeBlog(blog);
       refreshBlogs();
     } catch (err) {
       notifyFailure(err.message);

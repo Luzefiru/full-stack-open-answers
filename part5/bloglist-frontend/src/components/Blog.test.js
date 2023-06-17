@@ -11,7 +11,7 @@ describe('the Blog component', () => {
       author: 'Testy',
       url: 'https://test.com',
       likes: 7357,
-      user: 'Not Testy',
+      user: {},
     };
 
     render(<Blog blog={testBlog} />);
@@ -28,7 +28,7 @@ describe('the Blog component', () => {
       author: 'Testy',
       url: 'https://test.com',
       likes: 7357,
-      user: 'Not Testy',
+      user: {},
     };
 
     render(<Blog blog={testBlog} />);
@@ -40,5 +40,35 @@ describe('the Blog component', () => {
 
     expect(screen.queryByText(/https:\/\/test.com/)).toBeInTheDocument();
     expect(screen.queryByText(/7357/)).toBeInTheDocument();
+  });
+
+  test('ensures the refreshBlogs function is called twice after pressing the like button twice', () => {
+    const testBlog = {
+      title: 'A Test Title',
+      author: 'Testy',
+      url: 'https://test.com',
+      likes: 7357,
+      user: {},
+    };
+
+    const mockHandler = jest.fn(() => {
+      console.log('mockHandler called');
+    });
+
+    render(
+      <Blog
+        blog={testBlog}
+        refreshBlogs={jest.fn()}
+        token="testToken"
+        notifySuccess={mockHandler}
+        notifyFailure={jest.fn()}
+      />
+    );
+
+    userEvent.click(screen.getByRole('button'));
+    userEvent.click(screen.getByText('like'));
+    userEvent.click(screen.getByText('like'));
+
+    expect(mockHandler.mock.calls).toHaveLength(2);
   });
 });
