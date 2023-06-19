@@ -6,6 +6,11 @@ describe('Blog app', function () {
       username: 'test',
       password: 'test12345',
     });
+    cy.request('POST', `${Cypress.env('API_URL')}/users`, {
+      name: 'Another Testy',
+      username: 'another',
+      password: 'another12345',
+    });
     cy.visit('/');
   });
 
@@ -82,6 +87,37 @@ describe('Blog app', function () {
         .click();
       cy.contains('button', 'Remove').click();
       cy.get('A cypress blog Queen Cypress').should('not.exist');
+    });
+
+    it.only('Only the creator of a blog may see the delete button of a blog', function () {
+      cy.contains('New Blog').click();
+      cy.get('#title').type('A cypress blog');
+      cy.get('#author').type('Queen Cypress');
+      cy.get('#url').type('http://cypress.com');
+      cy.contains('button', 'Create').click();
+      cy.contains('A cypress blog Queen Cypress');
+      cy.contains('button', 'Logout').click();
+
+      cy.request('POST', `${Cypress.env('API_URL')}/login`, {
+        username: 'another',
+        password: 'another12345',
+      }).then((res) => {
+        localStorage.setItem('currentUser', JSON.stringify(res.body));
+        cy.visit('/');
+      });
+
+      cy.contains('A cypress blog Queen Cypress')
+        .contains('button', 'view')
+        .click();
+
+      cy.contains('A cypress blog Queen Cypress')
+        .parent()
+        .contains('button', 'Remove')
+        .click();
+
+      cy.get('.Notification')
+        .should('contain', 'you are not the owner of this blog')
+        .and('have.css', 'border-color', 'rgb(255, 0, 0)');
     });
   });
 });
