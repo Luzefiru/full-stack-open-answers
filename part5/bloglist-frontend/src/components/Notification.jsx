@@ -56,7 +56,10 @@ const Notification = (_, ref) => {
 
   if (message) {
     return (
-      <div style={type === 'success' ? successStyles : failureStyles}>
+      <div
+        className="Notification"
+        style={type === 'success' ? successStyles : failureStyles}
+      >
         {message}
       </div>
     );
