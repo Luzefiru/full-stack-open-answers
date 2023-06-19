@@ -56,7 +56,7 @@ describe('Blog app', function () {
       cy.contains('A cypress blog Queen Cypress').contains('button', 'view');
     });
 
-    it.only('A user can like a blog', function () {
+    it('A user can like a blog', function () {
       cy.contains('New Blog').click();
       cy.get('#title').type('A cypress blog');
       cy.get('#author').type('Queen Cypress');
@@ -69,6 +69,19 @@ describe('Blog app', function () {
       cy.contains('button', 'like').click();
       cy.contains('You liked the blog:');
       cy.contains('A cypress blog Queen Cypress').parent().contains('1');
+    });
+
+    it.only('A user who created a blog can delete it', function () {
+      cy.contains('New Blog').click();
+      cy.get('#title').type('A cypress blog');
+      cy.get('#author').type('Queen Cypress');
+      cy.get('#url').type('http://cypress.com');
+      cy.contains('button', 'Create').click();
+      cy.contains('A cypress blog Queen Cypress')
+        .contains('button', 'view')
+        .click();
+      cy.contains('button', 'Remove').click();
+      cy.get('A cypress blog Queen Cypress').should('not.exist');
     });
   });
 });
