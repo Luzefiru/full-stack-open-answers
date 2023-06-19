@@ -43,8 +43,8 @@ describe('Blog app', function () {
         password: 'test12345',
       }).then((res) => {
         localStorage.setItem('currentUser', JSON.stringify(res.body));
+        cy.visit('/');
       });
-      cy.visit('/');
     });
 
     it.only('A blog can be created', function () {
@@ -54,6 +54,21 @@ describe('Blog app', function () {
       cy.get('#url').type('http://cypress.com');
       cy.contains('button', 'Create').click();
       cy.contains('A cypress blog Queen Cypress').contains('button', 'view');
+    });
+
+    it.only('A user can like a blog', function () {
+      cy.contains('New Blog').click();
+      cy.get('#title').type('A cypress blog');
+      cy.get('#author').type('Queen Cypress');
+      cy.get('#url').type('http://cypress.com');
+      cy.contains('button', 'Create').click();
+      cy.contains('A cypress blog Queen Cypress')
+        .contains('button', 'view')
+        .click();
+      cy.contains('A cypress blog Queen Cypress').parent().contains('0');
+      cy.contains('button', 'like').click();
+      cy.contains('You liked the blog:');
+      cy.contains('A cypress blog Queen Cypress').parent().contains('1');
     });
   });
 });
