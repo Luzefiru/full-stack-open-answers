@@ -70,6 +70,7 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
 
   return (
     <div
+      className="Blog"
       style={{ border: '2px solid black', borderRadius: '4px', padding: '8px' }}
     >
       {blog.title} {blog.author}{' '}

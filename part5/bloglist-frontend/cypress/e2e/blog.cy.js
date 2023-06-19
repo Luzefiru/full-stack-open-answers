@@ -52,7 +52,7 @@ describe('Blog app', function () {
       });
     });
 
-    it.only('A blog can be created', function () {
+    it('A blog can be created', function () {
       cy.contains('New Blog').click();
       cy.get('#title').type('A cypress blog');
       cy.get('#author').type('Queen Cypress');
@@ -76,7 +76,7 @@ describe('Blog app', function () {
       cy.contains('A cypress blog Queen Cypress').parent().contains('1');
     });
 
-    it.only('A user who created a blog can delete it', function () {
+    it('A user who created a blog can delete it', function () {
       cy.contains('New Blog').click();
       cy.get('#title').type('A cypress blog');
       cy.get('#author').type('Queen Cypress');
@@ -89,7 +89,7 @@ describe('Blog app', function () {
       cy.get('A cypress blog Queen Cypress').should('not.exist');
     });
 
-    it.only('Only the creator of a blog may see the delete button of a blog', function () {
+    it('Only the creator of a blog may see the delete button of a blog', function () {
       cy.contains('New Blog').click();
       cy.get('#title').type('A cypress blog');
       cy.get('#author').type('Queen Cypress');
@@ -118,6 +118,31 @@ describe('Blog app', function () {
       cy.get('.Notification')
         .should('contain', 'you are not the owner of this blog')
         .and('have.css', 'border-color', 'rgb(255, 0, 0)');
+    });
+
+    describe('When it has multiple posts', function () {
+      it.only('should contain both posts', function () {
+        cy.contains('New Blog').click();
+        cy.get('#title').type('The least liked blog');
+        cy.get('#author').type('Queen Cypress');
+        cy.get('#url').type('http://cypress.com');
+        cy.contains('button', 'Create').click();
+        cy.contains('The least liked blog');
+
+        cy.get('#title').type('The most liked blog');
+        cy.get('#author').type('Queen Cypress');
+        cy.get('#url').type('http://cypress.com');
+        cy.contains('button', 'Create').click();
+        cy.contains('The most liked blog').contains('button', 'view').click();
+        cy.contains('The most liked blog')
+          .parent()
+          .contains('button', 'like')
+          .click();
+        cy.visit('/');
+
+        cy.get('.Blog').eq(0).should('contain', 'The most liked blo');
+        cy.get('.Blog').eq(1).should('contain', 'The least liked blog');
+      });
     });
   });
 });
