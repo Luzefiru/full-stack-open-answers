@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import Anecdote from './components/Anecdote';
+import NewAnecdoteForm from './components/NewAnecdoteForm';
 
 const App = () => {
   const anecdotes = useSelector((state) => state);
@@ -15,13 +16,7 @@ const App = () => {
           votes={anecdote.votes}
         />
       ))}
-      <h2>create new</h2>
-      <form>
-        <div>
-          <input />
-        </div>
-        <button>create</button>
-      </form>
+      <NewAnecdoteForm />
     </div>
   );
 };
