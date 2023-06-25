@@ -10,7 +10,7 @@ export default function Filter() {
   };
 
   return (
-    <div style={{ marginBottom: '16px' }}>
+    <div style={{ margin: '16px 0px' }}>
       <label for="filter">Filter</label>
       <input
         type="text"
