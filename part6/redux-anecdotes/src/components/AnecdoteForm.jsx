@@ -9,7 +9,6 @@ export default function NewAnecdoteForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addAnecdote(content)).then((e) => {
-      console.log('e', e);
       setContent('');
     });
   };

@@ -4,7 +4,7 @@ import {
   createAnecdote,
   incrementAnecdoteVotes,
 } from '../services/anecdotes.service';
-import { setNotification, clearNotification } from './notificationReducer';
+import { setNotification } from './notificationReducer';
 
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
@@ -27,15 +27,11 @@ export const voteAnecdoteById = (id) => {
     const updatedAnecdote = await incrementAnecdoteVotes(id);
     if (updatedAnecdote !== undefined) {
       dispatch(voteAnecdote(id));
-      dispatch(setNotification(`You voted '${updatedAnecdote.content}'`));
-      setTimeout(() => {
-        dispatch(clearNotification());
-      }, 5000);
+      dispatch(setNotification(`You voted '${updatedAnecdote.content}'`, 5));
     } else {
-      dispatch(setNotification('There was an error voting for the anecdote.'));
-      setTimeout(() => {
-        dispatch(clearNotification());
-      }, 5000);
+      dispatch(
+        setNotification('There was an error voting for the anecdote.', 5)
+      );
     }
   };
 };
