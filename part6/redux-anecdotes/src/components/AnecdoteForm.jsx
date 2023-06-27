@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { addAnecdote } from '../reducers/anecdoteReducer';
-import { createAnecdote } from '../services/anecdotes.service';
 
 export default function NewAnecdoteForm() {
   const dispatch = useDispatch();
@@ -9,8 +8,8 @@ export default function NewAnecdoteForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createAnecdote(content).then((newAnecdote) => {
-      dispatch(addAnecdote(newAnecdote));
+    dispatch(addAnecdote(content)).then((e) => {
+      console.log('e', e);
       setContent('');
     });
   };

@@ -22,13 +22,11 @@ export const createAnecdote = async (content) => {
 export const incrementAnecdoteVotes = async (id) => {
   try {
     const getResponse = await axios.get(`${baseUrl}/${id}`);
-    console.log(getResponse);
     const targetAnecdote = getResponse.data;
     const patchResponse = await axios.patch(`${baseUrl}/${id}`, {
       ...targetAnecdote,
       votes: targetAnecdote.votes + 1,
     });
-    console.log(patchResponse);
     return patchResponse.data;
   } catch (err) {
     throw err;
