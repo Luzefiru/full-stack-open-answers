@@ -5,7 +5,7 @@ import { getAnecdotes } from './requests';
 
 const App = () => {
   const { data, isLoading, error } = useQuery({
-    queryKey: 'anecdotes',
+    queryKey: ['anecdotes'],
     queryFn: getAnecdotes,
   });
 
