@@ -8,3 +8,9 @@ export const getAnecdotes = async () => {
 export const createAnecdote = async (content) => {
   return axios.post(baseUrl, { content, votes: 0 }).then((res) => res.data);
 };
+
+export const voteAnecdote = async ({ id, content, votes }) => {
+  return axios
+    .put(`${baseUrl}/${id}`, { content, votes: votes + 1 })
+    .then((res) => res.data);
+};
