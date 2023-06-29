@@ -33,6 +33,13 @@ const App = () => {
 
   const [notification, setNotification] = useState('');
 
+  const notify = (str) => {
+    setNotification(str);
+    setTimeout(() => {
+      setNotification('');
+    }, 5000);
+  };
+
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
@@ -55,10 +62,23 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <div
+        style={{
+          width: 'max-content',
+          border: '2px solid magenta',
+          padding: '10px',
+          maring: '4px',
+        }}
+      >
+        {notification}
+      </div>
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route path="/about" element={<About />} />
-        <Route path="/create" element={<CreateNew addNew={addNew} />} />
+        <Route
+          path="/create"
+          element={<CreateNew addNew={addNew} notify={notify} />}
+        />
         <Route
           path="/anecdotes/:id"
           element={<Anecdote anecdote={anecdote} />}
