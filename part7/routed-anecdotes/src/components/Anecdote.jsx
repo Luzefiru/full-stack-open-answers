@@ -16,9 +16,9 @@ function Anecdote({ anecdote }) {
 export default Anecdote;
 
 Anecdote.propTypes = {
-  content: propTypes.string.isRequired,
-  author: propTypes.string.isRequired,
-  info: propTypes.string.isRequired,
-  votes: propTypes.number.isRequired,
-  id: propTypes.number.isRequired,
+  content: propTypes.string,
+  author: propTypes.string,
+  info: propTypes.string,
+  votes: propTypes.number,
+  id: propTypes.number,
 };
