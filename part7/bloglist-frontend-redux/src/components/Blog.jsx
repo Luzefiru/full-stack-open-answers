@@ -3,8 +3,9 @@ import blogService from '../services/blogs';
 import propTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { notifyFailure, notifySuccess } from '../redux/Notification.slice';
+import { refreshBlogs } from '../redux/Blog.slice';
 
-const Blog = ({ blog, refreshBlogs, token }) => {
+const Blog = ({ blog, token }) => {
   const dispatch = useDispatch();
   const [isShowingDetails, setIsShowingDetails] = useState(false);
 
@@ -18,12 +19,13 @@ const Blog = ({ blog, refreshBlogs, token }) => {
 
   const likeBlog = async () => {
     try {
+      await blogService.likeBlog(blog);
       dispatch(
         notifySuccess(`You liked the blog: ${blog.title} by ${blog.author}`)
       );
-      await blogService.likeBlog(blog);
-      refreshBlogs();
+      dispatch(refreshBlogs());
     } catch (err) {
+      console.log(err);
       dispatch(notifyFailure(err.message));
     }
   };
@@ -41,7 +43,7 @@ const Blog = ({ blog, refreshBlogs, token }) => {
             `Successfully removed blog: ${blog.title} by ${blog.author}`
           )
         );
-        refreshBlogs();
+        dispatch(refreshBlogs());
       } catch (err) {
         dispatch(notifyFailure(err.response.data.error));
       }
@@ -95,7 +97,6 @@ Blog.propTypes = {
     likes: propTypes.number.isRequired,
     user: propTypes.object.isRequired,
   }),
-  refreshBlogs: propTypes.func.isRequired,
   token: propTypes.string.isRequired,
 };
 

@@ -29,8 +29,7 @@ export const notifySuccess = (str) => {
 };
 
 export const notifyFailure = (str) => {
-  return (dispatch, getState) => {
-    console.log('notifying failure, currentState', getState());
+  return (dispatch) => {
     dispatch(setMessage(str));
     dispatch(setType('failure'));
 

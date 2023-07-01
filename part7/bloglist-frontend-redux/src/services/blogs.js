@@ -16,7 +16,8 @@ const createBlog = async ({ title, author, url, user, token }) => {
   return response.data;
 };
 
-const likeBlog = async (blog) => {
+const likeBlog = async (blogRef) => {
+  const blog = structuredClone(blogRef);
   const blogId = blog.id;
   // serializing the user field into ObjectId data type to match Blog schema
   blog.user = blog.user.id;

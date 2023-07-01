@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import propTypes from 'prop-types';
+import { createBlog } from '../redux/Blog.slice';
+import { useDispatch } from 'react-redux';
 
-const NewBlogForm = ({ createBlog }) => {
+const NewBlogForm = ({ currentUser }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
-  const handleCreateNewBlog = async (e) => {
+  const handleCreateNewBlog = (e) => {
     const clearBlogForm = () => {
       setTitle('');
       setAuthor('');
@@ -14,7 +17,15 @@ const NewBlogForm = ({ createBlog }) => {
     };
 
     e.preventDefault();
-    await createBlog({ title, author, url });
+    dispatch(
+      createBlog({
+        title,
+        author,
+        url,
+        username: currentUser.username,
+        token: currentUser.token,
+      })
+    );
     clearBlogForm();
   };
 
@@ -66,7 +77,7 @@ const NewBlogForm = ({ createBlog }) => {
 };
 
 NewBlogForm.propTypes = {
-  createBlog: propTypes.func.isRequired,
+  currentUser: propTypes.object.isRequired,
 };
 
 export default NewBlogForm;
