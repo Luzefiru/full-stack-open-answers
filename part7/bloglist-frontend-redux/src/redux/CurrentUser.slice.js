@@ -31,7 +31,7 @@ export const loginUser = (username, password) => {
         localStorage.setItem('currentUser', JSON.stringify(currentUserData));
       })
       .catch(() => {
-        dispatch(notifyFailure('invalid username or password'));
+        dispatch(notifyFailure('wrong username or password'));
       });
   };
 };
