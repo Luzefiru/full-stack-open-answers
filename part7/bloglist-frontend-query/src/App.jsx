@@ -11,10 +11,12 @@ import {
   failure,
   clear,
 } from './reducers/Notification.reducer';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const App = () => {
+  const queryClient = useQueryClient();
+
   const [blogs, setBlogs] = useState([]);
-  console.log('render');
 
   // login form state
   const [username, setUsername] = useState('');
@@ -41,6 +43,15 @@ const App = () => {
     }, 5000);
   };
 
+  const { isLoading, isError, error } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: () => blogService.getAll(),
+  });
+
+  const refreshBlogs = () => {
+    queryClient.invalidateQueries(['blogs']);
+  };
+
   // effect to get blog list
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -50,10 +61,6 @@ const App = () => {
   useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
   }, []);
-
-  const refreshBlogs = async () => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  };
 
   const handleLogout = () => {
     setCurrentUser(null);
@@ -78,6 +85,15 @@ const App = () => {
       notifyFailure(err.message);
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    console.log(error);
+    return <div>An error occured. Check the logs.</div>;
+  }
 
   // show login form only if no currentUser exists
   if (!currentUser) {
