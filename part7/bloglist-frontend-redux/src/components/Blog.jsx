@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
 import propTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { notifyFailure, notifySuccess } from '../redux/Notification.slice';
 
-const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
+const Blog = ({ blog, refreshBlogs, token }) => {
+  const dispatch = useDispatch();
   const [isShowingDetails, setIsShowingDetails] = useState(false);
 
   const showDetails = () => {
@@ -15,11 +18,13 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
 
   const likeBlog = async () => {
     try {
-      notifySuccess(`You liked the blog: ${blog.title} by ${blog.author}`);
+      dispatch(
+        notifySuccess(`You liked the blog: ${blog.title} by ${blog.author}`)
+      );
       await blogService.likeBlog(blog);
       refreshBlogs();
     } catch (err) {
-      notifyFailure(err.message);
+      dispatch(notifyFailure(err.message));
     }
   };
 
@@ -31,12 +36,14 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
     ) {
       try {
         await blogService.deleteBlog({ blog, token });
-        notifySuccess(
-          `Successfully removed blog: ${blog.title} by ${blog.author}`
+        dispatch(
+          notifySuccess(
+            `Successfully removed blog: ${blog.title} by ${blog.author}`
+          )
         );
         refreshBlogs();
       } catch (err) {
-        notifyFailure(err.response.data.error);
+        dispatch(notifyFailure(err.response.data.error));
       }
     }
   };
@@ -90,8 +97,6 @@ Blog.propTypes = {
   }),
   refreshBlogs: propTypes.func.isRequired,
   token: propTypes.string.isRequired,
-  notifySuccess: propTypes.func.isRequired,
-  notifyFailure: propTypes.func.isRequired,
 };
 
 export default Blog;

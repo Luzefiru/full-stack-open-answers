@@ -1,4 +1,6 @@
 import loginService from '../services/login';
+import { notifyFailure } from '../redux/Notification.slice';
+import { useDispatch } from 'react-redux';
 
 const LoginForm = ({
   username,
@@ -6,8 +8,8 @@ const LoginForm = ({
   password,
   setPassword,
   setCurrentUser,
-  notifyFailure,
 }) => {
+  const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
     const resetLoginForm = () => {
@@ -35,7 +37,7 @@ const LoginForm = ({
 
       resetLoginForm();
     } catch (err) {
-      notifyFailure('wrong username or password');
+      dispatch(notifyFailure('wrong username or password'));
     }
   };
 

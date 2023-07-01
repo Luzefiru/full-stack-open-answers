@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const successStyles = {
   fontSize: '1.5rem',
@@ -18,41 +18,10 @@ const failureStyles = {
   borderRadius: '8px',
 };
 
-const Notification = (_, ref) => {
+const Notification = () => {
   // notification state
-  const [message, setMessage] = useState('');
-  const [type, setType] = useState('');
-
-  const notifySuccess = (str) => {
-    setMessage(str);
-    setType('success');
-
-    setTimeout(() => {
-      setMessage('');
-      setType('');
-    }, 5000);
-  };
-
-  const notifyFailure = (str) => {
-    setMessage(str);
-    setType('failure');
-
-    setTimeout(() => {
-      setMessage('');
-      setType('');
-    }, 5000);
-  };
-
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        notifySuccess,
-        notifyFailure,
-      };
-    },
-    []
-  );
+  const message = useSelector((state) => state.notification.message);
+  const type = useSelector((state) => state.notification.type);
 
   if (message) {
     return (
@@ -66,4 +35,4 @@ const Notification = (_, ref) => {
   }
 };
 
-export default forwardRef(Notification);
+export default Notification;
