@@ -1,41 +1,21 @@
-import loginService from '../services/login';
 import { notifyFailure } from '../redux/Notification.slice';
 import { useDispatch } from 'react-redux';
+import { loginUser } from '../redux/CurrentUser.slice';
+import { useState } from 'react';
 
-const LoginForm = ({
-  username,
-  setUsername,
-  password,
-  setPassword,
-  setCurrentUser,
-}) => {
+const LoginForm = () => {
+  // login form state
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const dispatch = useDispatch();
   const handleLogin = async (e) => {
     e.preventDefault();
-    const resetLoginForm = () => {
-      setUsername('');
-      setPassword('');
-    };
 
     try {
-      const data = await loginService.login(username, password);
-
-      setCurrentUser({
-        username: data.username,
-        name: data.name,
-        token: data.token,
-      });
-
-      localStorage.setItem(
-        'currentUser',
-        JSON.stringify({
-          name: data.name,
-          username: data.username,
-          token: data.token,
-        })
-      );
-
-      resetLoginForm();
+      dispatch(loginUser(username, password));
+      setUsername('');
+      setPassword('');
     } catch (err) {
       dispatch(notifyFailure('wrong username or password'));
     }

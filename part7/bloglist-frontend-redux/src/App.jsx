@@ -1,43 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import BlogList from './components/BlogList';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Toggleable';
 import { initializeBlogs } from './redux/Blog.slice';
-import { useDispatch } from 'react-redux';
+import {
+  initializeCurrentUser,
+  logoutCurrentUser,
+} from './redux/CurrentUser.slice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
   const dispatch = useDispatch();
 
-  // login form state
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
+  const currentUser = useSelector((state) => {
+    return state.currentUser;
+  });
 
   // effect to load previously logged in user
   useEffect(() => {
-    setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
+    dispatch(initializeCurrentUser());
     dispatch(initializeBlogs());
   }, []);
 
   const handleLogout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('currentUser');
+    dispatch(logoutCurrentUser());
   };
 
   // show login form only if no currentUser exists
-  if (!currentUser) {
+  if (currentUser === null) {
     return (
       <>
         <Notification />
-        <LoginForm
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          setCurrentUser={setCurrentUser}
-        />
+        <LoginForm />
       </>
     );
   }
