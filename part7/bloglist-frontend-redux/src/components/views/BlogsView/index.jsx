@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import Togglable from './Toggleable';
-import BlogList from '../../BlogList';
+import BlogList from './BlogList';
 import NewBlogForm from './NewBlogForm';
 
 const BlogsView = () => {

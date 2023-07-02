@@ -8,10 +8,11 @@ import { initializeCurrentUser } from './redux/CurrentUser.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutCurrentUser } from './redux/CurrentUser.slice';
 import { Routes, Route } from 'react-router-dom';
+import User from './components/views/UsersView/User';
+import { initializeUsers } from './redux/User.slice';
 
 const App = () => {
   const dispatch = useDispatch();
-
   const currentUser = useSelector((state) => {
     return state.currentUser;
   });
@@ -20,6 +21,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeCurrentUser());
     dispatch(initializeBlogs());
+    dispatch(initializeUsers());
   }, []);
 
   const handleLogout = () => {
@@ -50,6 +52,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<BlogsView />} />
         <Route path="/users" element={<UsersView />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
     </>
   );

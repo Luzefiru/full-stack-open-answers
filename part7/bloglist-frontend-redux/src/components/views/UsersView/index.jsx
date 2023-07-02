@@ -1,17 +1,19 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { initializeUsers } from '../../../redux/User.slice';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function UsersView() {
-  const users = useSelector((state) => state.users);
   const dispatch = useDispatch();
+  const users = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(initializeUsers());
   }, []);
 
-  console.log('UsersView', users);
+  console.log(users);
 
   return (
     <div className="UsersView">
@@ -27,7 +29,9 @@ function UsersView() {
           {users.map((user) => {
             return (
               <tr key={user.username}>
-                <td>{user.name}</td>
+                <td>
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                </td>
                 <td>{user.blogs.length}</td>
               </tr>
             );

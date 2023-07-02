@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import blogService from '../services/blogs';
+import blogService from '../../../services/blogs';
 import propTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { notifyFailure, notifySuccess } from '../redux/Notification.slice';
-import { refreshBlogs } from '../redux/Blog.slice';
+import {
+  notifyFailure,
+  notifySuccess,
+} from '../../../redux/Notification.slice';
+import { refreshBlogs } from '../../../redux/Blog.slice';
 
 const Blog = ({ blog, token }) => {
   const dispatch = useDispatch();
