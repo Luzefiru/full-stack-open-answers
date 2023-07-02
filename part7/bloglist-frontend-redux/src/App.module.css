@@ -1,0 +1,63 @@
+.nav {
+  background-color: gainsboro;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 16px 32px;
+  border-radius: 4px;
+  box-shadow: 8px 0 12px rgba(0, 0, 0, 0.4);
+  margin-bottom: 64px;
+}
+
+.navLinkList {
+  display: flex;
+  gap: 8px;
+}
+
+.navLink {
+  text-transform: uppercase;
+  font-size: 24px;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 8px 16px;
+  letter-spacing: 1px;
+}
+
+.navLink:visited {
+  all: unset;
+}
+
+.navLink:hover {
+  outline: 3px solid black;
+  border-radius: 8px;
+}
+
+.navUser {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navUser .logout {
+  all: unset;
+  background-color: #c41e3a;
+  border-radius: 8px;
+  text-transform: uppercase;
+  color: white;
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.navUser .logout:hover {
+  background-color: #9b172d;
+}
+
+.titleHeading {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.appContainer {
+  margin: 0 128px;
+}

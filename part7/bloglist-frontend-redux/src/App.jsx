@@ -11,6 +11,7 @@ import { initializeBlogs } from './redux/Blog.slice';
 import { initializeCurrentUser } from './redux/CurrentUser.slice';
 import { initializeUsers } from './redux/User.slice';
 import { logoutCurrentUser } from './redux/CurrentUser.slice';
+import styles from './App.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,28 +42,32 @@ const App = () => {
 
   return (
     <>
-      <header
-        style={{
-          backgroundColor: 'gainsboro',
-          display: 'flex',
-          gap: '4px',
-          padding: '8px 16px',
-          borderRadius: '4px',
-        }}
-      >
-        <Link to="/">blogs</Link>
-        <Link to="/users">users</Link>
-        <span>{currentUser.name} logged in</span>
-        <button onClick={handleLogout}>Logout</button>
+      <header className={styles.nav}>
+        <div className={styles.navLinkList}>
+          <Link className={styles.navLink} to="/">
+            blogs
+          </Link>
+          <Link className={styles.navLink} to="/users">
+            users
+          </Link>
+        </div>
+        <div className={styles.navUser}>
+          <span>Welcome, {currentUser.name}</span>
+          <button className={styles.logout} onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </header>
-      <Notification />
-      <h2>blog app</h2>
-      <Routes>
-        <Route path="/" element={<BlogsView />} />
-        <Route path="/users" element={<UsersView />} />
-        <Route path="/users/:id" element={<IndividualUser />} />
-        <Route path="/blogs/:id" element={<IndividualBlog />} />
-      </Routes>
+      <div className={styles.appContainer}>
+        <Notification />
+        <h2 className={styles.titleHeading}>Blog App</h2>
+        <Routes>
+          <Route path="/" element={<BlogsView />} />
+          <Route path="/users" element={<UsersView />} />
+          <Route path="/users/:id" element={<IndividualUser />} />
+          <Route path="/blogs/:id" element={<IndividualBlog />} />
+        </Routes>
+      </div>
     </>
   );
 };

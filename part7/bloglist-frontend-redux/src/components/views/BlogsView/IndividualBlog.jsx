@@ -9,6 +9,7 @@ import { postComment, refreshBlogs } from '../../../redux/Blog.slice';
 import blogService from '../../../services/blogs';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import styles from './BlogsView.module.css';
 
 function IndividualBlog() {
   const { id } = useParams();
@@ -67,7 +68,7 @@ function IndividualBlog() {
   };
 
   return (
-    <div className="IndividualBlog">
+    <div className={styles.marginTop}>
       <h1>
         {blog.title} {blog.author}
       </h1>
@@ -89,7 +90,7 @@ function IndividualBlog() {
       >
         Remove
       </button>
-      <h3>comments</h3>
+      <h3 className={styles.marginTopMore}>comments</h3>
       <form onSubmit={handleSubmit}>
         <div>
           <input

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import propTypes from 'prop-types';
 import { createBlog } from '../../../redux/Blog.slice';
 import { useDispatch } from 'react-redux';
+import styles from './BlogsView.module.css';
 
 const NewBlogForm = ({ currentUser }) => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const NewBlogForm = ({ currentUser }) => {
   };
 
   return (
-    <div>
+    <div className={styles.marginTop}>
       <h1>Create New</h1>
       <form onSubmit={handleCreateNewBlog}>
         <div>
@@ -68,7 +69,7 @@ const NewBlogForm = ({ currentUser }) => {
           />
         </div>
 
-        <button style={{ display: 'block', margin: '8px 0' }} type="submit">
+        <button className={styles.createButton} type="submit">
           Create
         </button>
       </form>

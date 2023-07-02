@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom';
 const Blog = ({ blog }) => {
   return (
     <div
-      className="Blog"
-      style={{ border: '2px solid black', borderRadius: '4px', padding: '8px' }}
+      style={{
+        border: '2px solid gainsboro',
+        borderRadius: '8px',
+        padding: '16px 8px',
+        margin: '16px 0',
+      }}
     >
       <Link to={`/blogs/${blog.id}`}>
         {blog.title} {blog.author}

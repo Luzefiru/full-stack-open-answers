@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import propTypes from 'prop-types';
+import styles from './BlogsView.module.css';
 
 const Togglable = ({ text, children }) => {
   const [isShowing, setIsShowing] = useState('false');
@@ -9,13 +10,21 @@ const Togglable = ({ text, children }) => {
   };
 
   return isShowing ? (
-    <button onClick={toggleVisibility} style={{ marginBottom: '16px' }}>
+    <button
+      className={styles.toggleButton}
+      onClick={toggleVisibility}
+      style={{ marginBottom: '16px' }}
+    >
       {text}
     </button>
   ) : (
     <>
       {children}
-      <button onClick={toggleVisibility} style={{ marginBottom: '16px' }}>
+      <button
+        className={styles.toggleButton}
+        onClick={toggleVisibility}
+        style={{ marginBottom: '16px' }}
+      >
         Cancel
       </button>
     </>

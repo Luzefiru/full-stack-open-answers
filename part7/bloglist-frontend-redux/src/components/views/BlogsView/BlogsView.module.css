@@ -1,0 +1,19 @@
+.toggleButton {
+  margin: 4px 0;
+  padding: 8px 24px;
+  cursor: pointer;
+}
+
+.createButton {
+  composes: toggleButton;
+  background-color: green;
+  color: white;
+}
+
+.marginTop {
+  margin-top: 24px;
+}
+
+.marginTopMore {
+  margin-top: 48px;
+}

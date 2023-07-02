@@ -7,6 +7,7 @@ const successStyles = {
   color: 'green',
   padding: '0.5rem',
   borderRadius: '8px',
+  marginTop: '32px',
 };
 
 const failureStyles = {
@@ -16,6 +17,7 @@ const failureStyles = {
   color: 'red',
   padding: '0.5rem',
   borderRadius: '8px',
+  marginTop: '32px',
 };
 
 const Notification = () => {
