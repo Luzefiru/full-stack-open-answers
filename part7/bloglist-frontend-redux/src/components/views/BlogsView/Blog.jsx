@@ -8,7 +8,7 @@ const Blog = ({ blog }) => {
         border: '2px solid gainsboro',
         borderRadius: '8px',
         padding: '16px 8px',
-        margin: '16px 0',
+        margin: '16px 0px',
       }}
     >
       <Link to={`/blogs/${blog.id}`}>
