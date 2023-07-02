@@ -7,6 +7,7 @@ import { initializeBlogs } from './redux/Blog.slice';
 import { initializeCurrentUser } from './redux/CurrentUser.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutCurrentUser } from './redux/CurrentUser.slice';
+import { Routes, Route } from 'react-router-dom';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,8 +47,10 @@ const App = () => {
         <br />
         <br />
       </div>
-      {currentUser === true ? <BlogsView /> : ''}
-      <UsersView />
+      <Routes>
+        <Route path="/" element={<BlogsView />} />
+        <Route path="/users" element={<UsersView />} />
+      </Routes>
     </>
   );
 };
