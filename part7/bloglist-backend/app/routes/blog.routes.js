@@ -75,4 +75,20 @@ blogRouter.patch('/:id', async (req, res, next) => {
   }
 });
 
+blogRouter.post('/:id/comments', jwtAuth, async (req, res, next) => {
+  const blogId = req.params.id;
+  const newComment = req.body.comment;
+
+  try {
+    const updatedBlog = await blogController.postComment(blogId, newComment);
+    if (updatedBlog === null) {
+      res.status(404).json({ error: 'no blog with that id found' });
+    } else {
+      res.status(200).json(updatedBlog);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = blogRouter;

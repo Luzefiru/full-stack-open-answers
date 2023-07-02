@@ -1,0 +1,7 @@
+POST http://127.0.0.1:3003/api/blogs/64a11da8c9e55bc902a47d0f/comments
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YTExZGE1YzllNTViYzkwMmE0N2QwMCIsInVzZXJuYW1lIjoidGVzdCIsIm5hbWUiOiJUZXN0eSIsImlhdCI6MTY4ODI4NTI3MX0.PflLAw6zfuuiuCuoGkk9pkGaapdTmK1uC5ikyhq4oLg
+
+{
+    "comment": "test comment"
+}

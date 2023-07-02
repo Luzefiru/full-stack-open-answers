@@ -54,4 +54,32 @@ const updateBlog = async (blogId, updateObj) => {
   }
 };
 
-module.exports = { getBlog, getAllBlogs, postBlog, deleteBlog, updateBlog };
+const postComment = async (blogId, newComment) => {
+  try {
+    // find the target blog's document comments
+    const targetBlog = await Blog.findById(blogId);
+    const targetBlogComments = targetBlog.comments;
+
+    // update the blog by concatenating the newComment
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      { comments: targetBlogComments.concat(newComment) },
+      { new: true }
+    )
+      .populate('user', 'name username id')
+      .exec();
+
+    return updatedBlog;
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = {
+  getBlog,
+  getAllBlogs,
+  postBlog,
+  deleteBlog,
+  updateBlog,
+  postComment,
+};
