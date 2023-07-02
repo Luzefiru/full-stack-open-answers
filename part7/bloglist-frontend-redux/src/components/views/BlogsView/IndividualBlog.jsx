@@ -16,6 +16,8 @@ function IndividualBlog() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log(blog);
+
   const likeBlog = async () => {
     try {
       await blogService.likeBlog(blog);
@@ -52,12 +54,14 @@ function IndividualBlog() {
 
   return (
     <div className="IndividualBlog">
-      <h1>{blog.title}</h1>
+      <h1>
+        {blog.title} {blog.author}
+      </h1>
       <div>{blog.url}</div>
       <div>
         {blog.likes} <button onClick={likeBlog}>like</button>
       </div>
-      <div>{blog.user.name}</div>
+      <div>added by {blog.user.name}</div>
       <button
         onClick={deleteBlog}
         style={{
@@ -71,6 +75,16 @@ function IndividualBlog() {
       >
         Remove
       </button>
+      <h3>comments</h3>
+      {blog.comments.length > 0 ? (
+        <ul>
+          {blog.comments.map((comment) => {
+            return <li key={comment}>{comment}</li>;
+          })}
+        </ul>
+      ) : (
+        <div>There are no comments yet!</div>
+      )}
     </div>
   );
 }
