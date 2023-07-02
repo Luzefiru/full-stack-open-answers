@@ -11,11 +11,9 @@ import {
   failure,
   clear,
 } from './reducers/Notification.reducer';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 const App = () => {
-  const queryClient = useQueryClient();
-
   const [blogs, setBlogs] = useState([]);
 
   // login form state
@@ -43,19 +41,17 @@ const App = () => {
     }, 5000);
   };
 
-  const { isLoading, isError, error } = useQuery({
+  const { isLoading, isError, error, refetch } = useQuery({
     queryKey: ['blogs'],
     queryFn: () => blogService.getAll(),
+    onSuccess: (blogs) => {
+      setBlogs(blogs);
+    },
   });
 
   const refreshBlogs = () => {
-    queryClient.invalidateQueries(['blogs']);
+    refetch();
   };
-
-  // effect to get blog list
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
 
   // effect to load previously logged in user
   useEffect(() => {
@@ -67,23 +63,24 @@ const App = () => {
     localStorage.removeItem('currentUser');
   };
 
-  const createBlog = async ({ title, author, url }) => {
-    try {
-      const newBlog = await blogService.createBlog({
+  const mutation = useMutation({
+    mutationFn: ({ title, author, url }) =>
+      blogService.createBlog({
         title,
         author,
         url,
         user: currentUser.username,
         token: currentUser.token,
-      });
-
-      setBlogs(blogs.concat(newBlog));
+      }),
+    onSuccess: (newBlog) => {
       notifySuccess(`a new blog ${newBlog.title} by ${newBlog.author} added`);
+      refreshBlogs();
+    },
+    onFailure: (err) => notifyFailure(err.message),
+  });
 
-      return newBlog;
-    } catch (err) {
-      notifyFailure(err.message);
-    }
+  const createBlog = async ({ title, author, url }) => {
+    mutation.mutate({ title, author, url });
   };
 
   if (isLoading) {

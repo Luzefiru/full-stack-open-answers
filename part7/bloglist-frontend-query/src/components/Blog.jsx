@@ -1,9 +1,39 @@
 import { useState } from 'react';
 import blogService from '../services/blogs';
 import propTypes from 'prop-types';
+import { useMutation } from '@tanstack/react-query';
 
 const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
+  console.log(blog);
   const [isShowingDetails, setIsShowingDetails] = useState(false);
+
+  const deleteMutation = useMutation({
+    mutationFn: ({ blog, token }) => {
+      blogService.deleteBlog({ blog, token });
+    },
+    onSuccess: () => {
+      notifySuccess(
+        `Successfully removed blog: ${blog.title} by ${blog.author}`
+      );
+      refreshBlogs();
+    },
+    onError: (err) => {
+      notifyFailure(err.response.data.error);
+    },
+  });
+
+  const likeMutation = useMutation({
+    mutationFn: () => {
+      blogService.likeBlog(blog);
+    },
+    onSuccess: () => {
+      notifySuccess(`Successfully liked blog: ${blog.title} by ${blog.author}`);
+      refreshBlogs();
+    },
+    onError: (err) => {
+      notifyFailure(err.message);
+    },
+  });
 
   const showDetails = () => {
     setIsShowingDetails(!isShowingDetails);
@@ -14,13 +44,7 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
   })();
 
   const likeBlog = async () => {
-    try {
-      notifySuccess(`You liked the blog: ${blog.title} by ${blog.author}`);
-      await blogService.likeBlog(blog);
-      refreshBlogs();
-    } catch (err) {
-      notifyFailure(err.message);
-    }
+    likeMutation.mutate();
   };
 
   const deleteBlog = async () => {
@@ -29,15 +53,7 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
         `Are you sure you want to remove blog: ${blog.title} by ${blog.author}?`
       )
     ) {
-      try {
-        await blogService.deleteBlog({ blog, token });
-        notifySuccess(
-          `Successfully removed blog: ${blog.title} by ${blog.author}`
-        );
-        refreshBlogs();
-      } catch (err) {
-        notifyFailure(err.response.data.error);
-      }
+      deleteMutation.mutate({ blog, token });
     }
   };
 
@@ -81,13 +97,7 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
 };
 
 Blog.propTypes = {
-  blog: propTypes.shape({
-    title: propTypes.string.isRequired,
-    author: propTypes.string,
-    url: propTypes.string.isRequired,
-    likes: propTypes.number.isRequired,
-    user: propTypes.object.isRequired,
-  }),
+  blog: propTypes.object.isRequired,
   refreshBlogs: propTypes.func.isRequired,
   token: propTypes.string.isRequired,
   notifySuccess: propTypes.func.isRequired,
