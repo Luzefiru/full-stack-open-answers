@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
-import BlogList from './components/BlogList';
+import BlogsView from './components/views/BlogsView';
+import UsersView from './components/views/UsersView';
 import LoginForm from './components/LoginForm';
-import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
-import Togglable from './components/Toggleable';
 import { initializeBlogs } from './redux/Blog.slice';
-import {
-  initializeCurrentUser,
-  logoutCurrentUser,
-} from './redux/CurrentUser.slice';
+import { initializeCurrentUser } from './redux/CurrentUser.slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { logoutCurrentUser } from './redux/CurrentUser.slice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -25,6 +22,7 @@ const App = () => {
   }, []);
 
   const handleLogout = () => {
+    console.log('logging out');
     dispatch(logoutCurrentUser());
   };
 
@@ -41,20 +39,15 @@ const App = () => {
   return (
     <>
       <Notification />
+      <h2>blogs</h2>
       <div>
-        <h2>blogs</h2>
-        <div>
-          {currentUser.name} logged in{' '}
-          <button onClick={handleLogout}>Logout</button>
-          <br />
-          <br />
-        </div>
-
-        <Togglable text="New Blog">
-          <NewBlogForm currentUser={currentUser} />
-        </Togglable>
-        <BlogList token={currentUser.token} />
+        {currentUser.name} logged in{' '}
+        <button onClick={handleLogout}>Logout</button>
+        <br />
+        <br />
       </div>
+      {currentUser === true ? <BlogsView /> : ''}
+      <UsersView />
     </>
   );
 };

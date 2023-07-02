@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import propTypes from 'prop-types';
-import { createBlog } from '../redux/Blog.slice';
+import { createBlog } from '../../../redux/Blog.slice';
 import { useDispatch } from 'react-redux';
 
 const NewBlogForm = ({ currentUser }) => {
