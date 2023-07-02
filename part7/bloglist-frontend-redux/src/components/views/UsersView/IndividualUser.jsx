@@ -3,11 +3,8 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function User() {
-  const users = useSelector((state) => state.users);
   const { id } = useParams();
-  const user = users.find((u) => {
-    return u.id === id;
-  });
+  const user = useSelector((state) => state.users.find((u) => u.id === id));
 
   if (user === undefined) {
     return null;

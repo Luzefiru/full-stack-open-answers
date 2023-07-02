@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import IndividualUser from './components/views/UsersView/IndividualUser';
+import IndividualBlog from './components/views/BlogsView/IndividualBlog';
 import BlogsView from './components/views/BlogsView';
 import UsersView from './components/views/UsersView';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
+import { useDispatch, useSelector } from 'react-redux';
 import { initializeBlogs } from './redux/Blog.slice';
 import { initializeCurrentUser } from './redux/CurrentUser.slice';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutCurrentUser } from './redux/CurrentUser.slice';
-import { Routes, Route } from 'react-router-dom';
-import User from './components/views/UsersView/User';
 import { initializeUsers } from './redux/User.slice';
+import { logoutCurrentUser } from './redux/CurrentUser.slice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,7 +53,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<BlogsView />} />
         <Route path="/users" element={<UsersView />} />
-        <Route path="/users/:id" element={<User />} />
+        <Route path="/users/:id" element={<IndividualUser />} />
+        <Route path="/blogs/:id" element={<IndividualBlog />} />
       </Routes>
     </>
   );

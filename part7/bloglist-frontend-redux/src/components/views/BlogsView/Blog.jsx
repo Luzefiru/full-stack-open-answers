@@ -7,6 +7,7 @@ import {
   notifySuccess,
 } from '../../../redux/Notification.slice';
 import { refreshBlogs } from '../../../redux/Blog.slice';
+import { Link } from 'react-router-dom';
 
 const Blog = ({ blog, token }) => {
   const dispatch = useDispatch();
@@ -85,7 +86,9 @@ const Blog = ({ blog, token }) => {
       className="Blog"
       style={{ border: '2px solid black', borderRadius: '4px', padding: '8px' }}
     >
-      {blog.title} {blog.author}{' '}
+      <Link to={`/blogs/${blog.id}`}>
+        {blog.title} {blog.author}
+      </Link>{' '}
       <button onClick={showDetails}>{buttonText}</button>
       {details}
     </div>
