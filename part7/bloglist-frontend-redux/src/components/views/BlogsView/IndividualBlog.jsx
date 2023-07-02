@@ -5,9 +5,10 @@ import {
   notifyFailure,
   notifySuccess,
 } from '../../../redux/Notification.slice';
-import { refreshBlogs } from '../../../redux/Blog.slice';
+import { postComment, refreshBlogs } from '../../../redux/Blog.slice';
 import blogService from '../../../services/blogs';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function IndividualBlog() {
   const { id } = useParams();
@@ -15,8 +16,21 @@ function IndividualBlog() {
   const token = useSelector((state) => state.currentUser.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [comment, setComment] = useState('');
 
-  console.log(blog);
+  if (blog === undefined) {
+    return null;
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (comment.length <= 0) {
+      return dispatch(notifyFailure('Comments must contain min. 1 character.'));
+    }
+    dispatch(postComment(blog.id, comment, token));
+    dispatch(refreshBlogs());
+    setComment('');
+  };
 
   const likeBlog = async () => {
     try {
@@ -76,6 +90,18 @@ function IndividualBlog() {
         Remove
       </button>
       <h3>comments</h3>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            value={comment}
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
+          />
+          <button type="submit">add comment</button>
+        </div>
+      </form>
       {blog.comments.length > 0 ? (
         <ul>
           {blog.comments.map((comment) => {

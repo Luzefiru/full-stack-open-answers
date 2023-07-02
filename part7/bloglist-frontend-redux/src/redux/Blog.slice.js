@@ -49,3 +49,15 @@ export const refreshBlogs = () => {
     dispatch(setBlogs(fetchedBlogs));
   };
 };
+
+export const postComment = (blogId, comment, token) => {
+  return async (dispatch) => {
+    try {
+      await blogService.postComment({ blogId, comment, token });
+      dispatch(notifySuccess('You successfully left a comment.'));
+      dispatch(refreshBlogs());
+    } catch (err) {
+      dispatch(notifyFailure(err.message));
+    }
+  };
+};
