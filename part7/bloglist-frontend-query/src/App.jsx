@@ -11,6 +11,12 @@ import {
   failure,
   clear,
 } from './reducers/Notification.reducer';
+import {
+  default as CurrentUserReducer,
+  setUser,
+  logoutUser,
+  initializeUser,
+} from './reducers/CurrentUser.reducer';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
 const App = () => {
@@ -19,25 +25,31 @@ const App = () => {
   // login form state
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
 
   // reducer for notifications
-  const [notification, dispatch] = useReducer(NotificationReducer, {
+  const [notification, dispatchNotification] = useReducer(NotificationReducer, {
     message: '',
     type: '',
   });
 
+  // reducer for currentUser
+  const [currentUser, dispatchCurrentUser] = useReducer(CurrentUserReducer, {
+    username: null,
+    name: null,
+    token: null,
+  });
+
   const notifySuccess = (str) => {
-    dispatch(success(str));
+    dispatchNotification(success(str));
     setTimeout(() => {
-      dispatch(clear());
+      dispatchNotification(clear());
     }, 5000);
   };
 
   const notifyFailure = (str) => {
-    dispatch(failure(str));
+    dispatchNotification(failure(str));
     setTimeout(() => {
-      dispatch(clear());
+      dispatchNotification(clear());
     }, 5000);
   };
 
@@ -55,12 +67,11 @@ const App = () => {
 
   // effect to load previously logged in user
   useEffect(() => {
-    setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
+    dispatchCurrentUser(initializeUser());
   }, []);
 
   const handleLogout = () => {
-    setCurrentUser(null);
-    localStorage.removeItem('currentUser');
+    dispatchCurrentUser(logoutUser());
   };
 
   const mutation = useMutation({
@@ -93,7 +104,7 @@ const App = () => {
   }
 
   // show login form only if no currentUser exists
-  if (!currentUser) {
+  if (currentUser.token === null) {
     return (
       <>
         <Notification {...notification} />
@@ -102,7 +113,9 @@ const App = () => {
           password={password}
           setUsername={setUsername}
           setPassword={setPassword}
-          setCurrentUser={setCurrentUser}
+          setCurrentUser={({ username, name, token }) => {
+            dispatchCurrentUser(setUser({ username, name, token }));
+          }}
           notifyFailure={notifyFailure}
         />
       </>
@@ -137,6 +150,7 @@ const App = () => {
               token={currentUser.token}
               notifySuccess={notifySuccess}
               notifyFailure={notifyFailure}
+              currentUser={currentUser}
             />
           ))}
       </div>

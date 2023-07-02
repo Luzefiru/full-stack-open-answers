@@ -3,8 +3,14 @@ import blogService from '../services/blogs';
 import propTypes from 'prop-types';
 import { useMutation } from '@tanstack/react-query';
 
-const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
-  console.log(blog);
+const Blog = ({
+  blog,
+  refreshBlogs,
+  token,
+  notifySuccess,
+  notifyFailure,
+  currentUser,
+}) => {
   const [isShowingDetails, setIsShowingDetails] = useState(false);
 
   const deleteMutation = useMutation({
@@ -18,7 +24,7 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
       refreshBlogs();
     },
     onError: (err) => {
-      notifyFailure(err.response.data.error);
+      notifyFailure(err.message);
     },
   });
 
@@ -27,7 +33,7 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
       blogService.likeBlog(blog);
     },
     onSuccess: () => {
-      notifySuccess(`Successfully liked blog: ${blog.title} by ${blog.author}`);
+      notifySuccess(`You liked the blog: ${blog.title} by ${blog.author}`);
       refreshBlogs();
     },
     onError: (err) => {
@@ -48,7 +54,9 @@ const Blog = ({ blog, refreshBlogs, token, notifySuccess, notifyFailure }) => {
   };
 
   const deleteBlog = async () => {
-    if (
+    if (currentUser && currentUser.name !== blog.author) {
+      notifyFailure('you are not the owner of this blog');
+    } else if (
       window.confirm(
         `Are you sure you want to remove blog: ${blog.title} by ${blog.author}?`
       )

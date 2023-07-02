@@ -31,10 +31,14 @@ const likeBlog = async (blog) => {
   return updatedBlog;
 };
 
-const deleteBlog = async ({ blog, token }) => {
-  await axios.delete(`${baseUrl}/${blog.id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const deleteBlog = ({ blog, token }) => {
+  axios
+    .delete(`${baseUrl}/${blog.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .catch((err) => {
+      return err;
+    });
 };
 
 export default { getAll, createBlog, likeBlog, deleteBlog };
