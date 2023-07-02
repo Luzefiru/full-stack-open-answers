@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import IndividualUser from './components/views/UsersView/IndividualUser';
 import IndividualBlog from './components/views/BlogsView/IndividualBlog';
 import BlogsView from './components/views/BlogsView';
@@ -26,7 +26,6 @@ const App = () => {
   }, []);
 
   const handleLogout = () => {
-    console.log('logging out');
     dispatch(logoutCurrentUser());
   };
 
@@ -42,14 +41,22 @@ const App = () => {
 
   return (
     <>
-      <Notification />
-      <h2>blogs</h2>
-      <div>
-        {currentUser.name} logged in{' '}
+      <header
+        style={{
+          backgroundColor: 'gainsboro',
+          display: 'flex',
+          gap: '4px',
+          padding: '8px 16px',
+          borderRadius: '4px',
+        }}
+      >
+        <Link to="/">blogs</Link>
+        <Link to="/users">users</Link>
+        <span>{currentUser.name} logged in</span>
         <button onClick={handleLogout}>Logout</button>
-        <br />
-        <br />
-      </div>
+      </header>
+      <Notification />
+      <h2>blog app</h2>
       <Routes>
         <Route path="/" element={<BlogsView />} />
         <Route path="/users" element={<UsersView />} />
