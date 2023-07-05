@@ -1,3 +1,5 @@
+import { isNotNumber } from './utils/isNotNumber';
+
 type centimeters = number;
 type kilograms = number;
 interface input {
@@ -7,11 +9,8 @@ interface input {
 
 function parseArgs(args: string[]): input {
   if (args.length < 4 || args.length > 4) {
-    throw new Error('Not enough arguments!');
-  } else if (
-    typeof Number(args[2]) !== 'number' ||
-    typeof Number(args[3]) !== 'number'
-  ) {
+    throw new Error('This program only accepts 2 arguments!');
+  } else if (isNotNumber(args[2]) || isNotNumber(args[3])) {
     throw new Error('Arguments must be numbers!');
   } else {
     return { height: Number(args[2]), weight: Number(args[3]) };
@@ -41,5 +40,13 @@ function calculateBMI(height: centimeters, weight: kilograms): string {
   }
 }
 
-const { height, weight } = parseArgs(process.argv);
-console.log(calculateBMI(height, weight));
+try {
+  const { height, weight } = parseArgs(process.argv);
+  console.log(calculateBMI(height, weight));
+} catch (err) {
+  if (err instanceof Error) {
+    console.log('Something went wrong.', err.message);
+  } else {
+    console.log(err);
+  }
+}
