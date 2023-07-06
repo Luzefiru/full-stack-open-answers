@@ -6,6 +6,7 @@ const app = express();
 
 // eslint-disable-next-line
 app.use(cors());
+app.use(express.json());
 
 app.get('/api/ping', (_req, res) => {
   res.send('pong!');
