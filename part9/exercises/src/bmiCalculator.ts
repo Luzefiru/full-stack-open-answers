@@ -1,4 +1,4 @@
-import { isNotNumber } from './utils/isNotNumber';
+import { isNotNumber } from '../utils/isNotNumber';
 
 type centimeters = number;
 type kilograms = number;
@@ -17,7 +17,7 @@ function parseArgs(args: string[]): input {
   }
 }
 
-function calculateBMI(height: centimeters, weight: kilograms): string {
+export function calculateBMI(height: centimeters, weight: kilograms): string {
   const heightInMeters = height / 100;
   const BMI = weight / Math.pow(heightInMeters, 2);
 
@@ -48,5 +48,14 @@ try {
     console.log('Something went wrong.', err.message);
   } else {
     console.log(err);
+  }
+}
+
+export default function webBMI(height: unknown, weight: unknown) {
+  if (isNotNumber(height) || isNotNumber(weight)) {
+    throw new Error('malformatted parameters');
+  } else {
+    const bmi = calculateBMI(height as centimeters, weight as kilograms);
+    return { weight: Number(weight), height: Number(height), bmi };
   }
 }

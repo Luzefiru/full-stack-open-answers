@@ -1,4 +1,4 @@
-import { isNotNumber } from './utils/isNotNumber';
+import { isNotNumber } from '../utils/isNotNumber';
 
 type hours = number;
 type days = number;
