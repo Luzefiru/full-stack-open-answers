@@ -8,4 +8,4 @@ Content-Type: application/json
     "ssn": "090471-8890",
     "gender": "female",
     "occupation": "Digital evangelist"
-  }
+}
