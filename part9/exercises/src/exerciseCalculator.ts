@@ -36,7 +36,20 @@ function parseArgs(args: string[]): { hoursPerDay: hours[]; target: hours } {
   return { hoursPerDay, target };
 }
 
-function calculateExercises(hoursPerDay: hours[], target: hours): result {
+export default function calculateExercises(
+  hoursPerDay: hours[],
+  target: hours
+): result {
+  if (isNotNumber(target)) {
+    throw new Error('malformatted parameters');
+  }
+
+  for (let arg of hoursPerDay) {
+    if (isNotNumber(arg)) {
+      throw new Error('malformatted parameters');
+    }
+  }
+
   const periodLength: days = hoursPerDay.length;
   const trainingDays: days = hoursPerDay.filter((h) => h !== 0).length;
   const average =

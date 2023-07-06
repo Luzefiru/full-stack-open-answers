@@ -4,15 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node-dev index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "multiply": "ts-node src/multiplier.ts",
-    "calculate": "ts-node src/calculator.ts"
+    "calculate": "ts-node src/calculator.ts",
+    "lint": "eslint --ext .ts ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
     "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "eslint": "^8.44.0"
   }
 }
