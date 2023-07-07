@@ -1,24 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { DiaryEntry, NewDiaryEntry } from './common/types';
+import diaryServices from './services/diaries.service';
+import Entries from './components/Entries';
+import NewEntryForm from './components/NewEntryForm';
 
 function App() {
+  const [entries, setEntries] = useState<DiaryEntry[]>([]);
+
+  useEffect(() => {
+    const getDiaryEntries = async () => {
+      const entries = await diaryServices.getAllEntries();
+      setEntries(entries);
+    };
+
+    getDiaryEntries();
+  }, []);
+
+  if (entries.length === 0) {
+    return <div>Fetching entries...</div>;
+  }
+
+  const createEntry = async (entry: NewDiaryEntry): Promise<DiaryEntry> => {
+    const newEntry = await diaryServices.createEntry(entry);
+    setEntries(entries.concat(newEntry));
+    return newEntry;
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NewEntryForm createEntry={createEntry} />
+      <Entries entries={entries} />
     </div>
   );
 }
