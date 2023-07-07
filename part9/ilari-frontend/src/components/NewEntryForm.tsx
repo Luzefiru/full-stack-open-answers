@@ -11,6 +11,29 @@ interface NewEntryFormProps {
   createEntry: (entry: NewDiaryEntry) => Promise<DiaryEntry>;
 }
 
+const RadioButton = ({
+  value,
+  name,
+  onClick,
+}: {
+  value: string;
+  name: string;
+  onClick: () => void;
+}): JSX.Element => {
+  return (
+    <label>
+      {value}
+      <input
+        type="radio"
+        id={value}
+        name={name}
+        value={value}
+        onClick={onClick}
+      />
+    </label>
+  );
+};
+
 export default function NewEntryForm({ createEntry }: NewEntryFormProps) {
   const [date, setDate] = useState<string | ''>('');
   const [visibility, setVisibility] = useState<Visibility | ''>('');
@@ -62,26 +85,37 @@ export default function NewEntryForm({ createEntry }: NewEntryFormProps) {
         <label>
           date
           <input
+            type="date"
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               setDate(e.currentTarget.value);
             }}
           />
         </label>
-        <label>
+        <label style={{ display: 'flex', gap: '16px' }}>
           visibility
-          <input
-            onChange={(e: React.FormEvent<HTMLInputElement>): void => {
-              setVisibility(e.currentTarget.value as Visibility);
-            }}
-          />
+          {Object.values(Visibility).map((e) => (
+            <RadioButton
+              key={e}
+              name={'visibility'}
+              value={e}
+              onClick={() => {
+                setVisibility(e as Visibility);
+              }}
+            />
+          ))}
         </label>
-        <label>
+        <label style={{ display: 'flex', gap: '16px' }}>
           weather
-          <input
-            onChange={(e: React.FormEvent<HTMLInputElement>): void => {
-              setWeather(e.currentTarget.value as Weather);
-            }}
-          />
+          {Object.values(Weather).map((e) => (
+            <RadioButton
+              key={e}
+              name={'weather'}
+              value={e}
+              onClick={() => {
+                setWeather(e as Weather);
+              }}
+            />
+          ))}
         </label>
         <label>
           comment
