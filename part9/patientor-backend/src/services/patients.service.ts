@@ -2,11 +2,12 @@ import { Patient, NewPatient, Gender, Entry } from '../types';
 import patientsData from '../../data/patients';
 import { v1 as uuid } from 'uuid';
 
-function getPatients(): Omit<Patient, 'ssn'>[] {
+function getPatients(): Patient[] {
   return patientsData.map(
-    ({ id, name, dateOfBirth, gender, occupation, entries }) => ({
+    ({ id, name, dateOfBirth, gender, occupation, entries, ssn }) => ({
       id,
       name,
+      ssn,
       dateOfBirth,
       gender,
       occupation,
