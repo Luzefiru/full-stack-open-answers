@@ -4,6 +4,7 @@ import {
   MaleOutlined,
   TransgenderOutlined,
 } from '@mui/icons-material';
+import EntryItem from './EntryItem';
 
 interface PatientPageProps {
   patient: Patient | undefined;
@@ -37,6 +38,12 @@ function PatientPage({ patient }: PatientPageProps) {
         <div>ssn: {patient?.ssn ?? 'no ssn available'}</div>
         <div>occupation: {patient?.occupation}</div>
       </section>
+
+      <h2>entries</h2>
+      {patient?.entries.length === 0 ? 'no entries found' : ''}
+      {patient?.entries.map((entry) => (
+        <EntryItem entry={entry} />
+      ))}
     </div>
   );
 }
