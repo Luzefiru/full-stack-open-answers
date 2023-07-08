@@ -1,15 +1,26 @@
-import { Patient, NewPatient, Gender } from '../types';
+import { Patient, NewPatient, Gender, Entry } from '../types';
 import patientsData from '../../data/patients';
 import { v1 as uuid } from 'uuid';
 
 function getPatients(): Omit<Patient, 'ssn'>[] {
-  return patientsData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
-    id,
-    name,
-    dateOfBirth,
-    gender,
-    occupation,
-  }));
+  return patientsData.map(
+    ({ id, name, dateOfBirth, gender, occupation, entries }) => ({
+      id,
+      name,
+      dateOfBirth,
+      gender,
+      occupation,
+      entries,
+    })
+  );
+}
+
+function getPatient(id: string): Patient | never {
+  const result = patientsData.find((p) => p.id === id);
+  if (result === undefined) {
+    throw new Error('a patient with that id does not exist');
+  }
+  return result;
 }
 
 function createPatient(newPatientData: NewPatient): Omit<Patient, 'ssn'> {
@@ -87,7 +98,8 @@ export function toNewPatientData(object: any): NewPatient {
     !object.dateOfBirth ||
     !object.ssn ||
     !object.gender ||
-    !object.occupation
+    !object.occupation ||
+    !object.entries
   ) {
     throw new Error('Missing input fields!');
   }
@@ -98,8 +110,9 @@ export function toNewPatientData(object: any): NewPatient {
     ssn: parseSSN(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseOccupation(object.occupation),
+    entries: [] as Entry[],
   };
   return newPatient;
 }
 
-export default { getPatients, createPatient, toNewPatientData };
+export default { getPatients, getPatient, createPatient, toNewPatientData };

@@ -1,5 +1,4 @@
-import { Patient } from '../src/types';
-import { Gender } from '../src/types';
+import { Patient, Gender, Entry } from '../src/types';
 
 const data = [
   {
@@ -46,6 +45,7 @@ const data = [
 
 const patientsData: Patient[] = data.map((entry) => ({
   ...entry,
+  entries: [] as Entry[],
   gender: entry.gender as Gender,
 }));
 
