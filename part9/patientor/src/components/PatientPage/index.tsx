@@ -5,12 +5,25 @@ import {
   TransgenderOutlined,
 } from '@mui/icons-material';
 import EntryItem from './EntryItem';
+import { useState, useEffect } from 'react';
+import { Diagnosis } from '../../types';
+import diagnosesService from '../../services/diagnoses';
 
 interface PatientPageProps {
   patient: Patient | undefined;
 }
 
 function PatientPage({ patient }: PatientPageProps) {
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+
+  useEffect(() => {
+    const getDiagnoses = async () => {
+      const diagnoses: Diagnosis[] = await diagnosesService.getAllDiagnoses();
+      setDiagnoses(diagnoses);
+    };
+    getDiagnoses();
+  }, []);
+
   const genderIcon: JSX.Element =
     patient?.gender === 'female' ? (
       <FemaleOutlined />
@@ -42,7 +55,7 @@ function PatientPage({ patient }: PatientPageProps) {
       <h2>entries</h2>
       {patient?.entries.length === 0 ? 'no entries found' : ''}
       {patient?.entries.map((entry) => (
-        <EntryItem entry={entry} />
+        <EntryItem diagnoses={diagnoses} entry={entry} />
       ))}
     </div>
   );
