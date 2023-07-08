@@ -1,7 +1,7 @@
-import { Diagnose } from '../types';
+import { Diagnosis } from '../types';
 import diagnosesData from '../../data/diagnoses';
 
-function getDiagnoses(): Diagnose[] {
+function getDiagnoses(): Diagnosis[] {
   return diagnosesData;
 }
 
