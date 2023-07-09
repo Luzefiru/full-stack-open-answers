@@ -28,6 +28,10 @@ function AddEntryForm({
   const [dischargeDate, setDischargeDate] = useState<string>('');
   const [criteria, setCriteria] = useState<string>('');
 
+  const [employerName, setEmployerName] = useState<string>('');
+  const [sickStart, setSickStart] = useState<string>('');
+  const [sickEnd, setSickEnd] = useState<string>('');
+
   console.log(type);
 
   const notifyError = (str: string) => {
@@ -49,6 +53,8 @@ function AddEntryForm({
       specialist,
       healthCheckRating: Number(rating),
       discharge: { date: dischargeDate, criteria },
+      employerName,
+      sickLeave: { startDate: sickStart, endDate: sickEnd },
       diagnosisCodes: codes.split(','),
     };
 
@@ -58,6 +64,11 @@ function AddEntryForm({
 
     if (type !== 'Hospital') {
       delete payload.discharge;
+    }
+
+    if (type !== 'OccupationalHealthcare') {
+      delete payload.employerName;
+      delete payload.sickLeave;
     }
 
     const responseData = await patientService.createEntry(id, payload);
@@ -141,8 +152,8 @@ function AddEntryForm({
         )}
         {type === 'Hospital' ? (
           <>
+            <div style={{ marginTop: '16px' }}>Discharge Date</div>
             <input
-              style={{ marginTop: '16px' }}
               id="dischargeDate"
               value={dischargeDate}
               type="date"
@@ -162,6 +173,48 @@ function AddEntryForm({
                 handleChange(
                   e as React.ChangeEvent<HTMLInputElement>,
                   setCriteria
+                )
+              }
+            />
+          </>
+        ) : (
+          ''
+        )}
+        {type === 'OccupationalHealthcare' ? (
+          <>
+            <TextField
+              id="standard-basic"
+              label="Employer Name"
+              variant="standard"
+              value={employerName}
+              onChange={(e) =>
+                handleChange(
+                  e as React.ChangeEvent<HTMLInputElement>,
+                  setEmployerName
+                )
+              }
+            />
+            <div style={{ marginTop: '16px' }}>Sickness Start</div>
+            <input
+              id="startDate"
+              value={sickStart}
+              type="date"
+              onChange={(e) =>
+                handleChange(
+                  e as React.ChangeEvent<HTMLInputElement>,
+                  setSickStart
+                )
+              }
+            />
+            <div style={{ marginTop: '16px' }}>Sickness End</div>
+            <input
+              id="endDate"
+              value={sickEnd}
+              type="date"
+              onChange={(e) =>
+                handleChange(
+                  e as React.ChangeEvent<HTMLInputElement>,
+                  setSickEnd
                 )
               }
             />

@@ -101,6 +101,26 @@ function PatientPage({ patient }: PatientPageProps) {
         </Button>
       )}
 
+      {showingEntryForm && type === 'OccupationalHealthcare' ? (
+        <AddEntryForm
+          type="OccupationalHealthcare"
+          toggleEntryForm={toggleEntryForm}
+          id={patient.id}
+          setEntries={setEntries}
+        />
+      ) : (
+        <Button
+          style={{ margin: '16px' }}
+          variant="contained"
+          color="success"
+          onClick={() => {
+            toggleEntryForm('OccupationalHealthcare');
+          }}
+        >
+          Add New Occupational Healthcare Entry
+        </Button>
+      )}
+
       <section style={{ marginTop: '24px' }}>
         <div>ssn: {patient?.ssn ?? 'no ssn available'}</div>
         <div>occupation: {patient?.occupation}</div>
