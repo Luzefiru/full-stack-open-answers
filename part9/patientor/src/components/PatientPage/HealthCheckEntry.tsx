@@ -13,7 +13,7 @@ function HealthCheckEntryComponent({
   entry,
 }: HealthCheckEntryProps) {
   const heartColor = ['info', 'success', 'warning', 'error'][
-    entry.healthCheckRating
+    entry.healthCheckRating ?? 0
   ];
 
   return (

@@ -19,8 +19,10 @@ function PatientPage({ patient }: PatientPageProps) {
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
   const [showingEntryForm, setShowingEntryForm] = useState<boolean>(false);
   const [entries, setEntries] = useState<Entry[]>([]);
+  const [type, setType] = useState<string>('');
 
-  const toggleEntryForm = () => {
+  const toggleEntryForm = (type?: string) => {
+    setType(type ?? '');
     setShowingEntryForm(!showingEntryForm);
   };
 
@@ -59,15 +61,43 @@ function PatientPage({ patient }: PatientPageProps) {
         {genderIcon}
       </h1>
 
-      {showingEntryForm ? (
+      {showingEntryForm && type === 'HealthCheck' ? (
         <AddEntryForm
+          type="HealthCheck"
           toggleEntryForm={toggleEntryForm}
           id={patient.id}
           setEntries={setEntries}
         />
       ) : (
-        <Button variant="contained" color="primary" onClick={toggleEntryForm}>
-          Add New Entry
+        <Button
+          style={{ margin: '16px' }}
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            toggleEntryForm('HealthCheck');
+          }}
+        >
+          Add New Health Check
+        </Button>
+      )}
+
+      {showingEntryForm && type === 'Hospital' ? (
+        <AddEntryForm
+          type="Hospital"
+          toggleEntryForm={toggleEntryForm}
+          id={patient.id}
+          setEntries={setEntries}
+        />
+      ) : (
+        <Button
+          style={{ margin: '16px' }}
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            toggleEntryForm('Hospital');
+          }}
+        >
+          Add New Hospital Entry
         </Button>
       )}
 
