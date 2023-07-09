@@ -1,4 +1,4 @@
-import { Patient, NewPatient, Gender, Entry } from '../types';
+import { Patient, NewPatient, Gender, Entry, Diagnosis } from '../types';
 import patientsData from '../../data/patients';
 import { v1 as uuid } from 'uuid';
 
@@ -93,6 +93,45 @@ export function parseGender(arg: string): Gender {
   return arg;
 }
 
+const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> => {
+  if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
+    // we will just trust the data to be in correct form
+    return [] as Array<Diagnosis['code']>;
+  }
+
+  return object.diagnosisCodes as Array<Diagnosis['code']>;
+};
+
+function isEntry(object: unknown | Entry): object is Entry {
+  if (typeof object === 'object' && object !== null && 'type' in object) {
+    if (
+      !('description' in object || 'date' in object || 'specialist' in object)
+    ) {
+      return false;
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function toNewEntry(object: unknown): Entry {
+  if (!isEntry(object)) {
+    throw new Error('Bad entry data!');
+  }
+
+  const newEntry: Entry = {
+    ...object,
+    id: uuid(),
+    description: object.description,
+    date: parseDate(object.date),
+    specialist: object.specialist,
+    diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+  };
+
+  return newEntry;
+}
+
 export function toNewPatientData(object: any): NewPatient {
   if (
     !object.name ||
@@ -116,4 +155,22 @@ export function toNewPatientData(object: any): NewPatient {
   return newPatient;
 }
 
-export default { getPatients, getPatient, createPatient, toNewPatientData };
+function addEntry(id: string, newEntry: Entry): Patient {
+  const targetPatient = patientsData.find((p) => p.id === id);
+  if (targetPatient === undefined) {
+    throw new Error('Patient with that ID does not exist');
+  }
+
+  targetPatient.entries.push(newEntry);
+
+  return targetPatient;
+}
+
+export default {
+  getPatients,
+  getPatient,
+  createPatient,
+  toNewPatientData,
+  toNewEntry,
+  addEntry,
+};

@@ -20,4 +20,14 @@ router.post('/', (req, res) => {
   }
 });
 
+router.post('/:id/entries', (req, res) => {
+  try {
+    const newEntry = patientsService.toNewEntry(req.body);
+    const updatedPatient = patientsService.addEntry(req.params.id, newEntry);
+    res.status(201).send(updatedPatient);
+  } catch (err) {
+    if (err instanceof Error) res.status(400).json({ error: err.message });
+  }
+});
+
 export default router;
