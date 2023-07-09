@@ -126,7 +126,7 @@ export function toNewEntry(object: unknown): Entry {
     description: object.description,
     date: parseDate(object.date),
     specialist: object.specialist,
-    diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
+    diagnosisCodes: parseDiagnosisCodes(object),
   };
 
   return newEntry;
@@ -155,7 +155,7 @@ export function toNewPatientData(object: any): NewPatient {
   return newPatient;
 }
 
-function addEntry(id: string, newEntry: Entry): Patient {
+function addEntry(id: string, newEntry: Entry): Entry {
   const targetPatient = patientsData.find((p) => p.id === id);
   if (targetPatient === undefined) {
     throw new Error('Patient with that ID does not exist');
@@ -163,7 +163,7 @@ function addEntry(id: string, newEntry: Entry): Patient {
 
   targetPatient.entries.push(newEntry);
 
-  return targetPatient;
+  return newEntry;
 }
 
 export default {
