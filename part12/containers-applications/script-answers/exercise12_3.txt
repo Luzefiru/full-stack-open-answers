@@ -1,0 +1,7 @@
+Script started on 2023-07-12 04:18:41+00:00 [TERM="xterm" TTY="/dev/pts/0" COLUMNS="120" LINES="30"]
+# ls
+index.js
+# nano index.js
+#
+
+Script done on 2023-07-12 04:19:17+00:00 [COMMAND_EXIT_CODE="0"]
