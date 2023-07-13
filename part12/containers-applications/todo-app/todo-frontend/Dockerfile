@@ -10,6 +10,14 @@ RUN npm ci
 
 RUN npm run build
 
+FROM build-stage as test-stage
+
+RUN npm ci
+
+COPY . .
+
+CMD ["npm", "run", "test"]
+
 FROM nginx
 
 COPY --from=build-stage /usr/app/src/build /usr/share/nginx/html
