@@ -1,0 +1,32 @@
+Script started on 2023-07-13 11:54:36+08:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="120" LINES="30"]
+winfiru@DESKTOP-AUBP905:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                     NAMES
+5bd316635dcf   mongo     "docker-entrypoint.s…"   23 minutes ago   Up 23 minutes   0.0.0.0:3456->27017/tcp   todo-backend-mongo-1
+51e3dac8721c   redis     "docker-entrypoint.s…"   23 minutes ago   Up 23 minutes   0.0.0.0:7890->6379/tcp    todo-backend-redis-1
+winfiru@DESKTOP-AUBP905:~$ docker exec -it 51 bash
+root@51e3dac8721c:/data# PING
+bash: PING: command not found
+root@51e3dac8721c:/data# redis-cli
+127.0.0.1:6379> PING
+PONG
+127.0.0.1:6379> KEYS *
+1) "added_todos"
+127.0.0.1:6379> GET added_todos
+"2"
+127.0.0.1:6379> SET added_todos 9001
+OK
+127.0.0.1:6379> GET added_todos
+"9002"
+127.0.0.1:6379> DEL added_todos
+(integer) 1
+127.0.0.1:6379> GET added_todos
+(nil)
+127.0.0.1:6379> GET added_todos
+"1"
+127.0.0.1:6379>
+root@51e3dac8721c:/data#
+exit
+winfiru@DESKTOP-AUBP905:~$
+exit
+
+Script done on 2023-07-13 11:56:56+08:00 [COMMAND_EXIT_CODE="0"]
