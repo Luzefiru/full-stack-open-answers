@@ -1,4 +1,4 @@
-FROM node:16 AS build-stage
+FROM node:16 AS build
 
 WORKDIR /usr/app/src
 
@@ -10,14 +10,16 @@ RUN npm ci
 
 RUN npm run build
 
-FROM build-stage as test-stage
+FROM build-stage AS test
 
 RUN npm ci
 
 COPY . .
 
+ENV CI=true
+
 CMD ["npm", "run", "test"]
 
 FROM nginx
 
-COPY --from=build-stage /usr/app/src/build /usr/share/nginx/html
+COPY --from=build /usr/app/src/build /usr/share/nginx/html
