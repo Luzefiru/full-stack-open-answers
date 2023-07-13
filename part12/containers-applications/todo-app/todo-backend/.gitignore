@@ -1,4 +1,6 @@
+# persistent docker container data
 mongo_data
+redis_data
 
 # Logs
 logs
