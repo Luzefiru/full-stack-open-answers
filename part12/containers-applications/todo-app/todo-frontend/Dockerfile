@@ -1,10 +1,10 @@
-FROM node:16 AS build
+FROM node:16-alpine AS build
 
 WORKDIR /usr/app/src
 
 COPY . .
 RUN npm ci
-ENV REACT_APP_BACKEND_URL=http://localhost:3001
+ENV REACT_APP_BACKEND_URL=http://localhost:8080/api
 RUN npm run build
 
 FROM build AS test
