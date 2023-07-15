@@ -12,5 +12,14 @@ services:
     ports:
       - 3000:3000
     container_name: dev
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - app
   debug_helper:
     image: busybox
