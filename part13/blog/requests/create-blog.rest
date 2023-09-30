@@ -1,0 +1,19 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "author": "Alex Mitrani",
+  "url": "https://medium.com/@amitrani/getting-started-with-postgresql-5990b54f7169",
+  "title": "Getting Started With PostgreSQL"
+}
+
+###
+
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "author": "Umair Nadeem",
+  "url": "https://medium.com/@umairnadeem/deploy-to-aws-using-docker-compose-simple-210d71f43e67",
+  "title": "Deploy to AWS using Docker compose (simple)"
+}
