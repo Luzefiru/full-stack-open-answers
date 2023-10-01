@@ -7,9 +7,11 @@ app.use(express.json());
 const blogRouter = require('./controllers/blog.controller');
 const userRouter = require('./controllers/user.controller');
 const loginRouter = require('./controllers/login.controller');
+const authorRouter = require('./controllers/author.controller');
 app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
+app.use('/api/authors', authorRouter);
 
 // Error Handling
 const { errorHandlerMiddleware, unknownRouteHandler } = require('./middleware');

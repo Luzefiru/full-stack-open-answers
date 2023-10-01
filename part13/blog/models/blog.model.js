@@ -1,6 +1,6 @@
 const sequelize = require('../util/db');
 const { Model, DataTypes } = require('sequelize');
-const { User } = require('../models');
+// const { User } = require('../models');
 
 class Blog extends Model {}
 
@@ -12,13 +12,13 @@ Blog.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    author: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: 'id',
-      },
-    },
+    // author: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: User,
+    //     key: 'id',
+    //   },
+    // },
     url: {
       type: DataTypes.TEXT,
       allowNull: false,
