@@ -1,6 +1,7 @@
-PUT http://localhost:3001/api/users/test
+PUT http://localhost:3001/api/users/test2@gmail.com
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3QyQGdtYWlsLmNvbSIsIm5hbWUiOiJUZXN0eSIsImNyZWF0ZWRBdCI6IjIwMjMtMTAtMDFUMDY6NTE6MTMuNTkzWiIsInVwZGF0ZWRBdCI6IjIwMjMtMTAtMDFUMDk6MzY6MzUuNzg3WiJ9LCJpYXQiOjE2OTYxNTMwMDJ9.TpdK3bCeNtYPRbHix1KVbS3al-i9Nxcm1jcDXun0PyQ
 
 {
-  "username": "newtest"
+  "username": "test@gmail.com"
 }

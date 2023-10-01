@@ -1,5 +1,6 @@
 const sequelize = require('../util/db');
 const { Model, DataTypes } = require('sequelize');
+const { User } = require('../models');
 
 class Blog extends Model {}
 
@@ -12,7 +13,11 @@ Blog.init(
       primaryKey: true,
     },
     author: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      references: {
+        model: User,
+        key: 'id',
+      },
     },
     url: {
       type: DataTypes.TEXT,
@@ -29,7 +34,5 @@ Blog.init(
   },
   { sequelize, underscored: true, timestamps: false, modelName: 'blog' }
 );
-
-Blog.sync({ alter: true });
 
 module.exports = Blog;

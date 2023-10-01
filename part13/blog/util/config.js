@@ -5,4 +5,5 @@ module.exports = {
   POSTGRES_USER: process.env.POSTGRES_USER,
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
   PORT: process.env.PORT || 3001,
+  JWT_SECRET: process.env.JWT_SECRET,
 };
