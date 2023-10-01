@@ -5,7 +5,9 @@ app.use(express.json());
 
 // Routes
 const blogRouter = require('./controllers/blog.controller');
-app.use(blogRouter);
+const userRouter = require('./controllers/user.controller');
+app.use('/api/blogs', blogRouter);
+app.use('/api/users', userRouter);
 
 // Error Handling
 const { errorHandlerMiddleware, unknownRouteHandler } = require('./middleware');
