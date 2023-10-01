@@ -1,15 +1,11 @@
 const { Sequelize } = require('sequelize');
+const { POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD } = require('./config');
 
-const sequelize = new Sequelize(
-  process.env.POSTGRES_DB,
-  process.env.POSTGRES_USER,
-  process.env.POSTGRES_PASSWORD,
-  {
-    host: 'localhost',
-    port: 5432,
-    dialect: 'postgres',
-  }
-);
+const sequelize = new Sequelize(POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, {
+  host: 'localhost',
+  port: 5432,
+  dialect: 'postgres',
+});
 
 (async () => {
   try {
