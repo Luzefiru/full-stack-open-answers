@@ -1,4 +1,4 @@
-const sequelize = require('../util/db');
+const { sequelize } = require('../util/db');
 const { Model, DataTypes } = require('sequelize');
 
 class User extends Model {}
@@ -19,6 +19,14 @@ User.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   { sequelize, underscored: true, modelName: 'user', timestamps: false }
