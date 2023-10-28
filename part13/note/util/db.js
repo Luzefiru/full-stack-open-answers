@@ -39,4 +39,6 @@ const connectToDB = async () => {
   }
 };
 
-module.exports = { sequelize, connectToDB, rollbackMigrations };
+connectToDB();
+
+module.exports = { sequelize, rollbackMigrations };
