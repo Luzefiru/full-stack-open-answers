@@ -31,8 +31,18 @@ Blog.init(
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
+    year: {
+      type: DataTypes.INTEGER,
+      validate: {
+        min: { args: 1991, msg: 'Blog must be published after or on 1991.' },
+        max: {
+          args: new Date().getFullYear(),
+          msg: 'Blog must not be published beyond the current year.',
+        },
+      },
+    },
   },
-  { sequelize, underscored: true, timestamps: false, modelName: 'blog' }
+  { sequelize, underscored: true, modelName: 'blog' }
 );
 
 module.exports = Blog;

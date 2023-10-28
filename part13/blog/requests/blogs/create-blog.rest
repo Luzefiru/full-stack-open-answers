@@ -5,5 +5,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxL
 {
   "author": "Alex Mitrani",
   "url": "https://medium.com/@amitrani/getting-started-with-postgresql-5990b54f7169",
-  "title": "Getting Started With PostgreSQL"
+  "title": "Getting Started With PostgreSQL",
+  "year": 2022
+}
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6InRlc3RAZ21haWwuY29tIiwibmFtZSI6IlRlc3R5IiwiY3JlYXRlZEF0IjoiMjAyMy0xMC0wMVQxMDowOToxMC4wMTdaIiwidXBkYXRlZEF0IjoiMjAyMy0xMC0wMVQxMDowOToxMC4wMTdaIn0sImlhdCI6MTY5NjE1NDk1Nn0.00JwcRIlYS2G5uIi3y_nFINMQoVwFeH07CtUNiOp43U
+
+{
+  "author": "Alex Mitrani",
+  "url": "https://medium.com/@amitrani/getting-started-with-postgresql-5990b54f7169",
+  "title": "I Should Fail and Throw a ValidationError",
+  "year": 1990
 }
