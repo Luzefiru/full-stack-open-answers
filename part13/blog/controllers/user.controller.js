@@ -8,8 +8,6 @@ router.get('/', async (_, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  const { read } = req.query;
-
   const user = await User.findByPk(req.params.id, {
     attributes: ['name', 'username'],
     include: {
