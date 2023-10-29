@@ -8,6 +8,8 @@ router.get('/', async (_, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  const { read } = req.query;
+
   const user = await User.findByPk(req.params.id, {
     attributes: ['name', 'username'],
     include: {
@@ -35,6 +37,13 @@ router.get('/:id', async (req, res) => {
       readinglists: { id: r.id, read: r.isRead },
     };
   });
+
+  if (req.query.read === 'true' || req.query.read === 'false') {
+    const booleanValue = req.query.read === 'true';
+    transformed.readings = transformed.readings.filter(
+      (r) => r.readinglists.read === booleanValue
+    );
+  }
 
   res.status(200).json(transformed);
 });
