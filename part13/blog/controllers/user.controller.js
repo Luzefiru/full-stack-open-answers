@@ -12,7 +12,7 @@ router.get('/:id', async (req, res) => {
     attributes: ['name', 'username'],
     include: {
       model: ReadingList,
-      attributes: ['isRead'],
+      attributes: ['isRead', 'id'],
       include: {
         model: Blog,
         include: User,
@@ -25,7 +25,15 @@ router.get('/:id', async (req, res) => {
   transformed.readings = user.readings.map((r) => {
     const author = r.blog.user;
     const { id, url, title, likes, year } = r.blog;
-    return { id, url, title, likes, year, author: author.name };
+    return {
+      id,
+      url,
+      title,
+      likes,
+      year,
+      author: author.name,
+      readinglists: { id: r.id, read: r.isRead },
+    };
   });
 
   res.status(200).json(transformed);

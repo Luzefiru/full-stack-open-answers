@@ -5,3 +5,13 @@ Content-Type: application/json
   "username": "test@gmail.com",
   "name": "Testy"
 }
+
+###
+
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "another@gmail.com",
+  "name": "Antoher"
+}
