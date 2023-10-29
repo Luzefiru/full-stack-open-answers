@@ -1,10 +1,34 @@
-const { User, Blog } = require('../models');
+const { User, Blog, ReadingList } = require('../models');
 const router = require('express').Router();
 const userTokenExtrator = require('../middleware/userTokenExtractor');
 
 router.get('/', async (_, res) => {
   const users = await User.findAll({ include: { model: Blog } });
   res.status(200).json(users);
+});
+
+router.get('/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id, {
+    attributes: ['name', 'username'],
+    include: {
+      model: ReadingList,
+      attributes: ['isRead'],
+      include: {
+        model: Blog,
+        include: User,
+      },
+    },
+  });
+
+  const transformed = { name: user.name, username: user.username };
+
+  transformed.readings = user.readings.map((r) => {
+    const author = r.blog.user;
+    const { id, url, title, likes, year } = r.blog;
+    return { id, url, title, likes, year, author: author.name };
+  });
+
+  res.status(200).json(transformed);
 });
 
 router.post('/', async (req, res) => {

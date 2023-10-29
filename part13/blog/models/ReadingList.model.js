@@ -6,12 +6,12 @@ class ReadingList extends Model {}
 ReadingList.init(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'users', key: 'id' },
     },
-    blog_id: {
+    blogId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: 'blogs', key: 'id' },
@@ -22,7 +22,7 @@ ReadingList.init(
       defaultValue: false,
     },
   },
-  { underscored: true, sequelize, modelName: 'reading_list' }
+  { underscored: true, sequelize, modelName: 'readings', timestamps: false }
 );
 
 module.exports = ReadingList;

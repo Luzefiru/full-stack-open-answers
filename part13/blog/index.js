@@ -8,10 +8,12 @@ const blogRouter = require('./controllers/blog.controller');
 const userRouter = require('./controllers/user.controller');
 const loginRouter = require('./controllers/login.controller');
 const authorRouter = require('./controllers/author.controller');
+const readingListRouter = require('./controllers/readings.controller');
 app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/authors', authorRouter);
+app.use('/api/readinglists', readingListRouter);
 
 // Error Handling
 const { errorHandlerMiddleware, unknownRouteHandler } = require('./middleware');
